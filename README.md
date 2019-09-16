@@ -13,7 +13,7 @@ Repository for the Fall'19 graduate course on Application Security.
 	- Implement a spell checker in C. Use the prototypes of functions provided in the dictionary.h file
 	- Use aspell utility after installing to generate the wordlist for standard uniformity.
 	- Analyze the program using Valgrind.
-	- Make a writeup that includes the following
+	- Make a writeup that includes the following.
 		- exactly how the program works
  		- The output of Valgrind
 		- what bugs you expect may exist in your code
