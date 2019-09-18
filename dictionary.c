@@ -29,7 +29,7 @@ int hash_function(const char* word)
     {
         sum += word[i];
     }
-    
+	    
     int bucket = sum % HASH_SIZE;
     return bucket;
 }

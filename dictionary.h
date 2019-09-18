@@ -22,10 +22,14 @@
 
 typedef struct node
 {
+	// array of characters
     char word[LENGTH + 1];
+    //  pointer to a node
     struct node* next;
 }
 node;
+
+
 
 typedef node* hashmap_t;
 
