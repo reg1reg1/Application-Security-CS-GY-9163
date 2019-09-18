@@ -19,6 +19,9 @@ Repository for the Fall'19 graduate course on Application Security.
 		- what bugs you expect may exist in your code
 		- why those bugs might occur
 		- what steps you took to mitigate or fix those bugs. 
+	- All of the code must be written in a file called **spell.c**.
+	- The program should accept 2 arguments file to be checked **1st argument** and wordlist **2nd argument**.
+	
 - **Week 3**
 	- Write test cases for the program written in Week 2; ensure substantial coverage
 	- Once test cases have been written, fuzz the C code using AFL fuzzer.
