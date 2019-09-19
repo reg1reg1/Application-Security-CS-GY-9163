@@ -14,7 +14,9 @@ int main()
 {
 char s[]="wordlist.txt";
 load_dictionary(s,hashtable);
-print_bucket(hashtable);
+int x =900;
+printf("Contents of bucket %d",x);
+print_bucket(x,hashtable);
 //printf("%d",check_life());
 
 return 0;

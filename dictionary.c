@@ -56,18 +56,14 @@ bool check_word(const char* word, hashmap_t hashtable[])
 
     return false;
 }
-bool check_life()
-{
-    printf("Checking imports");
-    return true;
-}
+
 
 //the input is the filename
 bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 {
     //inserting into hashmap_t
     char *buffer = read_file(dictionary_file);
-    printf("SSSSSSSSSSSSS");
+    
     char* pch = NULL;
     char* word1;
     pch = strtok(buffer, "\n");
@@ -79,7 +75,6 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
     }
     long count=0;
     int bucket=-1;
-    printf("start");
     while (pch != NULL)
     {   
         //printf("%d %s\n",count,pch);
@@ -91,8 +86,8 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         //printf("%d %s\n",count,word1);
         if(word1==NULL)
         {	
-        	printf("BROKEN");
-            break;
+        	printf("No more words....");
+        	return true;
         }
         word1[strlen(word1)-1] = 0;
         bucket = hash_function(word1);
@@ -150,30 +145,22 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         
     }
     
-    bucket=966;
-    printf("Begin bucket 966");
-    hashmap_t head = hashtable[bucket];
-    hashmap_t temp = head;
-    while(temp->next!=NULL)
-        {   
-            printf("%s",temp->word);
-            temp=temp->next;
-            
-        }
-    return false;
+   
+    return true;
 }
 
-void print_bucket(hashmap_t x[])
+//check function to print all words in a bucket (same hashfunction value)
+void print_bucket(int bucket,hashmap_t x[])
 {
-    int bucket=966;
     hashmap_t head = hashtable[bucket];
     hashmap_t temp = head;
     while(temp!=NULL)
         {   
-            printf("%s",temp->word);
+            printf("%s-->",temp->word);
             temp=temp->next;
             
         }
+        printf("\n");
 }
 
 int hash_function(const char* word)
