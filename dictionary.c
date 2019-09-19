@@ -67,62 +67,88 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 {
     //inserting into hashmap_t
     char *buffer = read_file(dictionary_file);
-    if(!buffer)
-    {
-        return false;
-        
-    }
-    
+    printf("SSSSSSSSSSSSS");
     char* pch = NULL;
-    const char* word;
+    char* word1;
     pch = strtok(buffer, "\n");
     /* split string and append tokens to 'res' */
-    int count=0;
+    long count=0;
     int bucket=-1;
+    printf("start");
     while (pch != NULL)
     {   
         //printf("%d %s\n",count,pch);
         
         pch = strtok(NULL, "\n");
-        word = pch;
-        //printf("%d %s",count,word);
-        if(word==NULL)
-        {
+        word1 = pch;
+        word1[strlen(word1)-1] = 0;
+        //printf("%d %s hello\n",strlen(word1),word1);
+        //printf("%d %s\n",count,word1);
+        if(word1==NULL)
+        {	
+        	printf("BROKEN");
             break;
         }
-        bucket = hash_function(word);
-        //printf("bucket:%d : %d",bucket,count);
-        hashmap_t head = hashtable[bucket];
+        bucket = hash_function(word1);
         
-        hashmap_t temp=head;
-        //printf("bucket attained %d\n",bucket);
-        int pos=0;
-        while(temp!=NULL)
-        {   pos=pos+1;
-            printf("%d POS",pos);
-            temp=temp->next;
-            
-        }
-        temp = (node*) malloc(sizeof(node));
-        //printf("Head attained\n");
-        if(strlen(word)<LENGTH)
+        hashmap_t head = hashtable[bucket];
+        if(head==NULL)
         {
-            strcpy(temp->word,word);
-            
+        	//head is empty
+        	hashtable[bucket] = (node *) malloc(sizeof(node));
+        	hashtable[bucket]->next = NULL;
+        	//printf("Head attained\n");
+        	if(strlen(word1)<LENGTH)
+        	{
+            	strcpy(hashtable[bucket]->word,word1);
+            	
+        	}
+        	else
+        	{
+        		printf("Error: Could not add word due to size violation");
+        		printf("Exiting......");
+        	}
         }
-        printf("%s %s %d %d\n---------\n",temp->word,word,pos,bucket);
-        temp->next=NULL;
-        if(temp==NULL)
+        else
         {
-            printf("WTF");
+        	 hashmap_t temp=head;
+
+        	//printf("bucket attained %d\n",bucket);
+        	int pos=0;
+        	while(temp->next!=NULL)
+        	{   pos=pos+1;
+        		//printf("%s\n",word1);
+           	 	//printf("Inserted word %s at bucket %d, %d POS\n",word1,bucket,pos);
+
+            	temp=temp->next;
             
+        	}
+
+        	temp->next = (node *) malloc(sizeof(node));
+        	//printf("Head attained\n");
+        	if(strlen(word1)<LENGTH)
+        	{
+            	strcpy(temp->next->word,word1);
+            
+        	}
+        	//if(bucket==966)
+        	//{
+        	//printf("DEBUG: word %s placed in bucket:%d at pos %d: word_count=%ld\n",word1,bucket,pos+1,count);
+        	//printf("\n>>>>>\n");
+        	//}
+        	//printf("%s %s %d %d\n---------\n",temp->word,word,pos,bucket);
+        	temp->next->next=NULL;
+
         }
         count++;
+        
     }
+    
     bucket=966;
+    printf("Begin");
     hashmap_t head = hashtable[bucket];
     hashmap_t temp = head;
-    while(temp!=NULL)
+    while(temp->next!=NULL)
         {   
             printf("%s",temp->word);
             temp=temp->next;
