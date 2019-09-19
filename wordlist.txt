@@ -601,11 +601,13 @@ Ubuntu
 urbanity
 abandon
 abounding
+UbuntuOne
 abandonment
 abandonment's
 abandoning
 abandons
 abundance
+UbuntuOne's
 abundance's
 abundances
 abandoned
@@ -18964,7 +18966,9 @@ autobahn
 Audubon's
 autobahn's
 autobahns
+Edubuntu
 outbound
+Edubuntu's
 outbreak
 outbreak's
 outbreaks
@@ -19085,6 +19089,7 @@ adverser
 advice
 advise
 adviser
+advisor
 artifice
 artificer
 edifice
@@ -24217,6 +24222,7 @@ blackness
 blackness's
 bleakness
 bleakness's
+blogging's
 blowgun's
 blowguns
 bludgeon's
@@ -40173,6 +40179,7 @@ cabinet
 carbonate
 cobnut
 jawboned
+Kubuntu
 cabinetmaker
 cabinetmaking
 cabinetmaking's
@@ -40190,6 +40197,7 @@ cabinets
 carbonate's
 carbonates
 cobnuts
+Kubuntu's
 carbonated
 cabinetwork
 cabinetwork's
@@ -47266,8 +47274,10 @@ cannonball's
 cannonballs
 Cunningham
 Cunningham's
+Canonical
 canonical
 canonically
+Canonical's
 cunningly
 genuinely
 cannoning
@@ -65274,7 +65284,9 @@ misinterpretation
 misinterpretation's
 misinterpretations
 McIntyre
+misandry
 McIntyre's
+misandrist
 maisonette's
 maisonettes
 Masonite's
@@ -118998,6 +119010,8 @@ shortlisted
 chortled
 shitload
 shuttled
+Shuttleworth
+Shuttleworth's
 showtime
 Chadian
 Chaitin

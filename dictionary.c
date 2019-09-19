@@ -14,11 +14,135 @@
 #include "dictionary.h"
 
 // Hash table is an array of linked lists.
-node* hashtable[HASH_SIZE];
+hashmap_t hashtable[HASH_SIZE];
 
+char * read_file(const char* str)
+{   
+    char * buffer = 0;
+    long length;
+    FILE * fptr = fopen (str, "rb");
+    if (fptr)
+    {   //predetermine the s
+        fseek (fptr, 0, SEEK_END);
+        length = ftell (fptr);
+        fseek (fptr, 0, SEEK_SET);
+        buffer = malloc (length+1);
+        if (buffer)
+        {
+            fread (buffer, 1, length, fptr);
+        }
+        fclose (fptr);
+        buffer[length] = '\0';
+    }
+    if (buffer)
+    {   
+        return buffer;
+        
+        
+    }
+    return NULL;
+}
 // Maps a word to an integer value to place it in the hash table.
 // Sum the value of each character in the word, then find the 
 // remainder after dividing by the size of the hash table.
+int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[])
+{
+
+    return 0;
+}
+
+bool check_word(const char* word, hashmap_t hashtable[])
+{
+
+    return false;
+}
+bool check_life()
+{
+    printf("Checking imports");
+    return true;
+}
+
+//the input is the filename
+bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
+{
+    //inserting into hashmap_t
+    char *buffer = read_file(dictionary_file);
+    if(!buffer)
+    {
+        return false;
+        
+    }
+    
+    char* pch = NULL;
+    const char* word;
+    pch = strtok(buffer, "\n");
+    /* split string and append tokens to 'res' */
+    int count=0;
+    int bucket=-1;
+    while (pch != NULL)
+    {   
+        //printf("%d %s\n",count,pch);
+        
+        pch = strtok(NULL, "\n");
+        word = pch;
+        //printf("%d %s",count,word);
+        if(word==NULL)
+        {
+            break;
+        }
+        bucket = hash_function(word);
+        //printf("bucket:%d : %d",bucket,count);
+        hashmap_t head = hashtable[bucket];
+        
+        hashmap_t temp=head;
+        //printf("bucket attained %d\n",bucket);
+        int pos=0;
+        while(temp!=NULL)
+        {   pos=pos+1;
+            printf("%d POS",pos);
+            temp=temp->next;
+            
+        }
+        temp = (node*) malloc(sizeof(node));
+        //printf("Head attained\n");
+        if(strlen(word)<LENGTH)
+        {
+            strcpy(temp->word,word);
+            
+        }
+        printf("%s %s %d %d\n---------\n",temp->word,word,pos,bucket);
+        temp->next=NULL;
+        if(temp==NULL)
+        {
+            printf("WTF");
+            
+        }
+        count++;
+    }
+    bucket=966;
+    hashmap_t head = hashtable[bucket];
+    hashmap_t temp = head;
+    while(temp!=NULL)
+        {   
+            printf("%s",temp->word);
+            temp=temp->next;
+            
+        }
+    return false;
+}
+
+void print_bucket(hashmap_t x[])
+{
+    int bucket=966;
+    hashmap_t head = hashtable[bucket];
+    hashmap_t temp = head;
+    while(temp!=NULL)
+        {   
+            printf("%s",temp->word);
+            temp=temp->next;
+            
+        }
+}
 
 int hash_function(const char* word)
 {
@@ -32,5 +156,7 @@ int hash_function(const char* word)
 	    
     int bucket = sum % HASH_SIZE;
     return bucket;
-}
 
+}
+//each bucket is a linkedlist of arrays with the same sum value
+//a bucket also indicates a collision in the hash table

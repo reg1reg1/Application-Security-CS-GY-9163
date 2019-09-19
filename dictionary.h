@@ -33,6 +33,9 @@ node;
 
 typedef node* hashmap_t;
 
+void print_bucket(hashmap_t x[]);
+bool check_life();
+char * read_file(const char* file_name);
 /**
  * Array misspelled is populated with words that are misspelled. Returns the length of misspelled.
  */
@@ -52,6 +55,8 @@ typedef node* hashmap_t;
  * Example:
  *  int num_misspelled = check_words(text_file, hashtable, misspelled);
  **/
+
+
 int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]);
 
 /**
@@ -70,8 +75,8 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]);
  * Example:
  *  bool correct  = check_word(word, hashtable);
  **/
-bool check_word(const char* word, hashmap_t hashtable[]);
 
+bool check_word(const char* word, hashmap_t hashtable[]);
 /**
  * Loads dictionary into memory.  Returns true if successful else false.
  */
