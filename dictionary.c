@@ -72,6 +72,11 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
     char* word1;
     pch = strtok(buffer, "\n");
     /* split string and append tokens to 'res' */
+    if(!buffer)
+    {
+        return false;
+        
+    }
     long count=0;
     int bucket=-1;
     printf("start");
@@ -81,7 +86,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         
         pch = strtok(NULL, "\n");
         word1 = pch;
-        word1[strlen(word1)-1] = 0;
+        
         //printf("%d %s hello\n",strlen(word1),word1);
         //printf("%d %s\n",count,word1);
         if(word1==NULL)
@@ -89,6 +94,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         	printf("BROKEN");
             break;
         }
+        word1[strlen(word1)-1] = 0;
         bucket = hash_function(word1);
         
         hashmap_t head = hashtable[bucket];
