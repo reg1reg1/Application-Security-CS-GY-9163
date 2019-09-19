@@ -139,8 +139,8 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         	}
         	//if(bucket==966)
         	//{
-        	printf("DEBUG: word %s placed in bucket:%d at pos %d: word_count=%ld\n",word1,bucket,pos+1,count);
-        	printf("\n>>>>>\n");
+        	//printf("DEBUG: word %s placed in bucket:%d at pos %d: word_count=%ld\n",word1,bucket,pos+1,count);
+        	//printf("\n>>>>>\n");
         	//}
         	//printf("%s %s %d %d\n---------\n",temp->word,word,pos,bucket);
         	temp->next->next=NULL;
@@ -151,7 +151,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
     }
     
     bucket=966;
-    printf("Begin");
+    printf("Begin bucket 966");
     hashmap_t head = hashtable[bucket];
     hashmap_t temp = head;
     while(temp->next!=NULL)
