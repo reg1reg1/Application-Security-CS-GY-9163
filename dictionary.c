@@ -64,7 +64,7 @@ bool check_word(const char* word, hashmap_t hashtable[])
 	}
 	for ( ; *p; ++p) *p = tolower(*pch);
 	const char* lower = p;
-	printf("%s",lower);
+	printf("%s\n",lower);
 	//ignoring cases in the spellchecker
 
 
@@ -73,7 +73,7 @@ bool check_word(const char* word, hashmap_t hashtable[])
 	hashmap_t head = hashtable[bucket];
 	hashmap_t temp = head;
 	bool found=false;
-	printf("DEBUG: bucket of hash %d",bucket);
+	printf("DEBUG: bucket of hash %d\n",bucket);
 	while(temp->next!=NULL)
 	{
 		if(strcmp(temp->word,lower)==0)
