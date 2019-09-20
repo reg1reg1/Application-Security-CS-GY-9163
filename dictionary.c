@@ -148,7 +148,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         	{   pos=pos+1;
         		//printf("%s\n",word1);
            	 	//printf("Inserted word %s at bucket %d, %d POS\n",word1,bucket,pos);
-
+        		printf("Possible infinite loop\n")
             	temp=temp->next;
             
         	}
@@ -172,6 +172,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         count++;
         
     }
+    printf("End of while loop");
     
    
     return true;
