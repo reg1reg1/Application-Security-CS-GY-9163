@@ -52,14 +52,14 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[])
 }
 
 bool check_word(const char* word, hashmap_t hashtable[])
-{
-	printf("TRACE:Inside checkword");
+{	fflush(stdout);
+	printf("TRACE:Inside checkword\n");
 	int bucket=-1;
 	char* pch = word;
 	char* p;
 	if(strlen(word)>LENGTH || strlen(word)<=0)
 	{
-		printf("ERROR:Size violation, word does not exist");
+		printf("ERROR:Size violation, word does not exist\n");
 		return false;
 	}
 	for ( ; *p; ++p) *p = tolower(*pch);
@@ -146,6 +146,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         	}
         	newnode->next=NULL;
         	temp->next = newnode;
+
         	//if(bucket==966)
         	//{
         	//printf("DEBUG: word %s placed in bucket:%d at pos %d: word_count=%ld\n",word1,bucket,pos+1,count);
@@ -189,7 +190,7 @@ int print_bucket(int bucket,hashmap_t x[])
         }
         printf("DEBUG 4");
         free(temp);
-        
+
         //printf("\n");
         return 0;
 }
