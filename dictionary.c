@@ -164,7 +164,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 }
 
 //check function to print all words in a bucket (same hashfunction value)
-void print_bucket(int bucket,hashmap_t x[])
+int print_bucket(int bucket,hashmap_t x[])
 {	
 	printf("DEBUG:inside print_bucket");
     hashmap_t head = hashtable[bucket];
@@ -189,6 +189,7 @@ void print_bucket(int bucket,hashmap_t x[])
         }
         printf("DEBUG 4");
         printf("\n");
+        return 0;
 }
 
 int hash_function(const char* word)
