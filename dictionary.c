@@ -107,7 +107,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
     {   printf("WTF");
         //printf("%ld %s\n",count,pch);
         
-        pch = strtok(nullv, "\n");
+        pch = strtok(NULL, "\n");
         word1 = pch;
         
         //printf("%d %s hello\n",strlen(word1),word1);
