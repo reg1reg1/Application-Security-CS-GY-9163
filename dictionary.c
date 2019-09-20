@@ -102,7 +102,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
      while(fgets(word1, sizeof(word1), fp) != NULL) {
          //fputs(chunk, stdout);
 
-        printf(">>%s<<\n",word1);
+        //printf(">>%s<<\n",word1);
         bucket = hash_function(word1);
         hashmap_t head = hashtable[bucket];
         if(head==NULL)
@@ -172,16 +172,16 @@ void print_bucket(int bucket,hashmap_t x[])
     while(temp!=NULL)
         {   
         	if(temp->word!=NULL)
-        	{
+        	{	printf("debug 1:")
         		printf("%s-->",temp->word);
         	}
             
             if(temp->next!=NULL)
-            {
+            {	printf("debug 2:")
             	temp=temp->next;
             }
             else
-            {
+            {	printf("debug 3:")
             	break;
             }
             
