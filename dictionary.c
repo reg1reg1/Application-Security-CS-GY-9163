@@ -47,14 +47,41 @@ char * read_file(const char* str)
 // remainder after dividing by the size of the hash table.
 int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[])
 {
-
+	//
     return 0;
 }
 
 bool check_word(const char* word, hashmap_t hashtable[])
 {
+	printf("TRACE:Inside checkword");
+	int bucket=-1;
+	char* pch = word;
+	char* p;
+	if(strlen(word)>LENGTH || strlen(word)<=0)
+	{
+		printf("ERROR:Size violation, word does not exist");
+		return false;
+	}
+	for ( ; *p; ++p) *p = tolower(*pch);
+	const char* lower = p;
+	printf("%s",lower);
+	//ignoring cases in the spellchecker
 
-    return false;
+
+	bucket= hash_function(lower);
+	//
+	hashmap_t head = hashtable[bucket];
+	hashmap_t temp = head;
+	bool found=false;
+	printf("DEBUG: bucket of hash %d",bucket);
+	while(temp->next!=NULL)
+	{
+		if(strcmp(temp->word,lower)==0)
+		{
+			found=true;
+		}
+	}
+	return found;
 }
 
 
