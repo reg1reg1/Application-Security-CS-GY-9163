@@ -115,7 +115,8 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         if(!word1)
         {	
         	printf("No more words....");
-        	break;
+        	return true;
+        	
         	
         }
         word1[strlen(word1)-1] = 0;
