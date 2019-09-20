@@ -171,7 +171,11 @@ void print_bucket(int bucket,hashmap_t x[])
     hashmap_t temp = head;
     while(temp!=NULL)
         {   
-            printf("%s-->",temp->word);
+        	if(temp->word!=NULL)
+        	{
+        		printf("%s-->",temp->word);
+        	}
+            
             if(temp->next!=NULL)
             {
             	temp=temp->next;
