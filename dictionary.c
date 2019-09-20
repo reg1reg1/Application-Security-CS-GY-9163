@@ -187,6 +187,7 @@ void print_bucket(int bucket,hashmap_t x[])
             
             
         }
+        printf("DEBUG 4");
         printf("\n");
 }
 
