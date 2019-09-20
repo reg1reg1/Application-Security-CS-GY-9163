@@ -155,21 +155,21 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
             	temp=temp->next;
             
         	}
-
-        	temp->next = (node *) malloc(sizeof(node));
-        	//printf("Head attained\n");
+        	hashmap_t newnode = (node *) malloc(sizeof(node));
         	if(strlen(word1)<LENGTH)
         	{
-            	strcpy(temp->next->word,word1);
+            	strcpy(newnode->word,word1);
             
         	}
+        	newnode->next=NULL;
+        	temp->next = newnode;
         	//if(bucket==966)
         	//{
         	printf("DEBUG: word %s placed in bucket:%d at pos %d: word_count=%ld\n",word1,bucket,pos+1,count);
         	//printf("\n>>>>>\n");
         	//}
         	//printf("%s %s %d %d\n---------\n",temp->word,word1,pos,bucket);
-        	temp->next->next=NULL;
+        	//temp->next->next=NULL;
         	printf("DEBUG:2");
 
         }
