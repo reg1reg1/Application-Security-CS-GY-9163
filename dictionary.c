@@ -20,7 +20,7 @@ char * read_file(const char* str)
 {   
     char * buffer = 0;
     long length;
-    FILE * fptr = fopen (str, "rb");
+    FILE * fptr = fopen (str, "r");
     if (fptr)
     {   //predetermine the s
         fseek (fptr, 0, SEEK_END);
@@ -89,40 +89,21 @@ bool check_word(const char* word, hashmap_t hashtable[])
 bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 {
     //inserting into hashmap_t
-    printf("DEBUG:1");
-    char *buffer = read_file(dictionary_file);
-    
-    char* pch = NULL;
-    char* word1;
-    pch = strtok(buffer, "\n");
-    /* split string and append tokens to 'res' */
-    if(!buffer)
-    {
-        return false;
-        
-    }
-    long count=0;
     int bucket=-1;
-    char *nullv = NULL;
-    while (pch != NULL)
-    {   printf("WTF");
-        //printf("%ld %s\n",count,pch);
-        
-        pch = strtok(NULL, "\n");
-        word1 = pch;
-        
-        //printf("%d %s hello\n",strlen(word1),word1);
-        //printf("%d %s\n",count,word1);
-        if(!word1)
-        {	
-        	printf("No more words....");
-        	return true;
-        	
-        	
-        }
-        word1[strlen(word1)-1] = 0;
+    int count=0;
+    FILE *fp = fopen(dictionary_file, "r");
+ 	if(fp == NULL) {
+         perror("Unable to open file!");
+          exit(1);
+     }
+ 
+     char word1[128];
+ 
+     while(fgets(word1, sizeof(word1), fp) != NULL) {
+         //fputs(chunk, stdout);
+
+        printf(">>%s<<\n",word1);
         bucket = hash_function(word1);
-        
         hashmap_t head = hashtable[bucket];
         if(head==NULL)
         {
@@ -146,6 +127,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         	 hashmap_t temp=head;
 
         	//printf("bucket attained %d\n",bucket);
+
         	int pos=0;
         	while(temp->next!=NULL)
         	{   pos=pos+1;
@@ -158,30 +140,26 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         	hashmap_t newnode = (node *) malloc(sizeof(node));
         	if(strlen(word1)<LENGTH)
         	{
-            	strcpy(newnode->word,word1);
+            	strncpy(newnode->word,word1,strlen(word1)-1);
             
         	}
         	newnode->next=NULL;
         	temp->next = newnode;
         	//if(bucket==966)
         	//{
-        	printf("DEBUG: word %s placed in bucket:%d at pos %d: word_count=%ld\n",word1,bucket,pos+1,count);
+        	//printf("DEBUG: word %s placed in bucket:%d at pos %d: word_count=%ld\n",word1,bucket,pos+1,count);
         	//printf("\n>>>>>\n");
-        	//}
-        	//printf("%s %s %d %d\n---------\n",temp->word,word1,pos,bucket);
-        	//temp->next->next=NULL;
-        	printf("DEBUG:2");
+        	
 
         }
-        printf("DEBUG:3");
+        //printf("DEBUG:3");
         count++;
-
-        
-    }
-    printf("End of while loop");
-    
-   
-    return true;
+         //fputs("|*\n", stdout);  // marker string used to show where the content of the chunk array has ended
+     }
+ 
+     fclose(fp);
+     return true;
+ 	
 }
 
 //check function to print all words in a bucket (same hashfunction value)
