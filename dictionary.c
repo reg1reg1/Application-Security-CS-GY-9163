@@ -112,7 +112,8 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         	hashtable[bucket]->next = NULL;
         	//printf("Head attained\n");
         	if(strlen(word1)<LENGTH)
-        	{
+        	{	
+        		//change strcpy
             	strcpy(hashtable[bucket]->word,word1);
             	
         	}
