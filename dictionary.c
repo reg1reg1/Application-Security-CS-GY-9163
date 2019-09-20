@@ -108,7 +108,10 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         
         pch = strtok(NULL, "\n");
         word1 = pch;
-        
+        if(!pch)
+        {
+        	return false;
+        }
         //printf("%d %s hello\n",strlen(word1),word1);
         //printf("%d %s\n",count,word1);
         if(word1==NULL)
