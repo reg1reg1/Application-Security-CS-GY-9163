@@ -172,16 +172,16 @@ void print_bucket(int bucket,hashmap_t x[])
     while(temp!=NULL)
         {   
         	if(temp->word!=NULL)
-        	{	printf("debug 1:")
+        	{	printf("debug 1:");
         		printf("%s-->",temp->word);
         	}
             
             if(temp->next!=NULL)
-            {	printf("debug 2:")
+            {	printf("debug 2:");
             	temp=temp->next;
             }
             else
-            {	printf("debug 3:")
+            {	printf("debug 3:");
             	break;
             }
             
