@@ -104,7 +104,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
     int bucket=-1;
     while (pch != NULL)
     {   printf("WTF");
-        printf("%ld %s\n",count,pch);
+        //printf("%ld %s\n",count,pch);
         
         pch = strtok(NULL, "\n");
         word1 = pch;
