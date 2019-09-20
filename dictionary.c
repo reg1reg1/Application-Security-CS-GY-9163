@@ -164,7 +164,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         	//printf("DEBUG: word %s placed in bucket:%d at pos %d: word_count=%ld\n",word1,bucket,pos+1,count);
         	//printf("\n>>>>>\n");
         	//}
-        	//printf("%s %s %d %d\n---------\n",temp->word,word,pos,bucket);
+        	printf("%s %s %d %d\n---------\n",temp->word,word,pos,bucket);
         	temp->next->next=NULL;
 
         }
