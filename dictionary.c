@@ -57,13 +57,16 @@ bool check_word(const char* word, hashmap_t hashtable[])
 	int bucket=-1;
 	char* pch = word;
 	char* p;
+	printf("DEBUG 8:\n");
 	if(strlen(word)>LENGTH || strlen(word)<=0)
 	{
 		printf("ERROR:Size violation, word does not exist\n");
 		return false;
 	}
+	printf("DEBUG 7\n");
 	for ( ; *p; ++p) *p = tolower(*pch);
 	const char* lower = p;
+	printf("DEBUG :6\n");
 	printf("%s\n",lower);
 	//ignoring cases in the spellchecker
 
