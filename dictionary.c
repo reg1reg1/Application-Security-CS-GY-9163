@@ -103,7 +103,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
     long count=0;
     int bucket=-1;
     while (pch != NULL)
-    {   
+    {   printf("WTF");
         printf("%ld %s\n",count,pch);
         
         pch = strtok(NULL, "\n");
@@ -148,7 +148,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         	{   pos=pos+1;
         		//printf("%s\n",word1);
            	 	//printf("Inserted word %s at bucket %d, %d POS\n",word1,bucket,pos);
-        		printf("Possible infinite loop\n");
+        		//printf("Possible infinite loop\n");
             	temp=temp->next;
             
         	}
