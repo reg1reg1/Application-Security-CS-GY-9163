@@ -188,7 +188,9 @@ int print_bucket(int bucket,hashmap_t x[])
             
         }
         printf("DEBUG 4");
-        printf("\n");
+        free(temp);
+        
+        //printf("\n");
         return 0;
 }
 
