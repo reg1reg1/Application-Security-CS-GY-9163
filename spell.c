@@ -15,8 +15,9 @@ int main()
 char s[]="wordlist.txt";
 load_dictionary(s,hashtable);
 int x =900;
-printf("Contents of bucket %d",x);
+//printf("Contents of bucket %d",x);
 print_bucket(x,hashtable);
+
 if(check_word("ejaculates",hashtable))
 {
 	printf("Spelled correctly");

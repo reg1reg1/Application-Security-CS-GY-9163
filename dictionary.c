@@ -170,7 +170,15 @@ void print_bucket(int bucket,hashmap_t x[])
     while(temp!=NULL)
         {   
             printf("%s-->",temp->word);
-            temp=temp->next;
+            if(temp->next!=NULL)
+            {
+            	temp=temp->next;
+            }
+            else
+            {
+            	break;
+            }
+            
             
         }
         printf("\n");
