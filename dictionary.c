@@ -89,6 +89,7 @@ bool check_word(const char* word, hashmap_t hashtable[])
 bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 {
     //inserting into hashmap_t
+    printf("DEBUG:1")
     char *buffer = read_file(dictionary_file);
     
     char* pch = NULL;
@@ -169,8 +170,10 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         	//}
         	//printf("%s %s %d %d\n---------\n",temp->word,word1,pos,bucket);
         	temp->next->next=NULL;
+        	printf("DEBUG:2")
 
         }
+        printf("DEBUG:3")
         count++;
         
     }
