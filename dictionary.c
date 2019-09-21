@@ -215,7 +215,7 @@ int print_bucket(int bucket,hashmap_t x[])
             
         }
         
-        free(temp);
+        //free(temp);
 
         //fprintf(stdout,"\n");
         fprintf(stdout,"DEBUG: EXIT print_bucket()\n");
