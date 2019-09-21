@@ -17,39 +17,25 @@
 hashmap_t hashtable[HASH_SIZE];
 
 
-// Call it like this:
-char * read_file(const char* str)
-{   
-    char * buffer = 0;
-    long length;
-    FILE * fptr = fopen (str, "r");
-    if (fptr)
-    {   //predetermine the s
-        fseek (fptr, 0, SEEK_END);
-        length = ftell (fptr);
-        fseek (fptr, 0, SEEK_SET);
-        buffer = malloc (length+1);
-        if (buffer)
-        {
-            fread (buffer, 1, length, fptr);
-        }
-        fclose (fptr);
-        buffer[length] = '\0';
-    }
-    if (buffer)
-    {   
-        return buffer;
-        
-        
-    }
-    return NULL;
-}
 // Maps a word to an integer value to place it in the hash table.
 // Sum the value of each character in the word, then find the 
 // remainder after dividing by the size of the hash table.
 int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[])
 {
 	//
+	int bucket=-1;
+    int count=0;
+   
+ 	if(fp == NULL) {
+         perror("Unable to open file!");
+          exit(1);
+     }
+ 
+     char word1[128];
+ 
+     while(fgets(word1, sizeof(word1), fp) != NULL) {
+
+     }
     return 0;
 }
 
@@ -114,18 +100,29 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
          //fputs(chunk, stdout);
 
         //fprintf(stdout,">>%s<<\n",word1);
-        bucket = hash_function(word1);
+
+        
+
+        char* newword =0;
+        newword = (char*)malloc(strlen(word1));
+		memcpy(newword,word1,strlen(word1)-1);
+		newword[strlen(word1)-1] = 0;
+
+		bucket = hash_function(newword);
         hashmap_t head = hashtable[bucket];
+
         if(head==NULL)
         {
         	//head is empty
         	hashtable[bucket] = (node *) malloc(sizeof(node));
         	hashtable[bucket]->next = NULL;
         	//fprintf(stdout,"Head attained\n");
-        	if(strlen(word1)<LENGTH)
+        	
+        	
+        	if(strlen(newword)<LENGTH)
         	{	
         		//change strcpy
-            	snprintf(hashtable[bucket]->word,sizeof(word1)-2,word1);
+            	snprintf(hashtable[bucket]->word,sizeof(hashtable[bucket]->word),newword);
 
             	
         	}
@@ -134,7 +131,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         		fprintf(stdout,"Error: Could not add word due to size violation");
         		fprintf(stdout,"Exiting......");
         	}
-        	//fprintf(stdout,"DEBUG: word %s placed in bucket:%d at head: word_count=%ld\n",word1,bucket,count);
+        	fprintf(stdout,"DEBUG: word %s placed in bucket:%d at head: word_count=%ld\n",hashtable[bucket]->word,bucket,count);
         }
         else
         {
@@ -154,7 +151,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         	hashmap_t newnode = (node *) malloc(sizeof(node));
         	if(strlen(word1)<=LENGTH)
         	{
-            	snprintf(newnode->word,sizeof(word1)-2,word1);
+            	snprintf(newnode->word,sizeof(newnode->word),newword);
             
         	}
         	newnode->next=NULL;

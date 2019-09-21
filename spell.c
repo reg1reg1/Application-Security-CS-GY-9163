@@ -19,7 +19,7 @@ fprintf(stdout,"Contents of bucket %d\n",x);
 print_bucket(x,hashtable);
 printf("DEBUG: 5\n");
 //bucket 1331
-if(check_word("improvements\n",hashtable))
+if(check_word("improvements",hashtable))
 {
 	printf("Spelled correctly\n");
 }
