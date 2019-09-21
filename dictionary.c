@@ -210,7 +210,7 @@ int print_bucket(int bucket,hashmap_t x[])
     hashmap_t temp = head;
     while(temp!=NULL)
         {         
-        	//fprintf(stdout,"%s\n",temp->word);  
+        	fprintf(stdout,"%s\n",temp->word);  
             if(temp->next!=NULL)
             {	//fprintf(stdout,"debug 2:");
             	temp=temp->next;
