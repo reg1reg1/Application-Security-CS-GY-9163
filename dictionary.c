@@ -75,42 +75,26 @@ bool check_word(const char* word, hashmap_t hashtable[])
 	fprintf(stdout,"DEBUG: CHECKING word %s\n",word);
 	
 	int bucket=-1;
-	char* pch = word;
-	char* p;
-	//fprintf(stdout,"DEBUG 9:\n");
-	if(strlen(word)>LENGTH || strlen(word)<=0)
-	{
-		fprintf(stdout,"ERROR:Size violation, word does not exist\n");
-		return false;
-	}
-	
-	//fprintf(stdout,"%s\n",lower);
-	//ignoring cases in the spellchecker
-
-
-	bucket= hash_function(word);
-	//
-	hashmap_t head = hashtable[bucket];
-	hashmap_t temp = head;
-	bool found=false;
-	fprintf(stdout,"DEBUG: bucket of hash %d\n",bucket);
-	while(temp!=NULL)
-	{	
-		fprintf(stdout,"CHECKING %s\n",temp->word);
-		if(temp->next!=NULL)
+	bool found = false;
+	bucket = hash_function(word);
+    hashmap_t head = hashtable[bucket];
+    hashmap_t temp = head;
+    fprintf(stdout, "DEBUG: BUCKET BEING CHECKED %d\n", bucket);
+    while(temp!=NULL)
+        {         
+        	fprintf(stdout,"%s\n",temp->word);  
+            if(temp->next!=NULL)
             {	//fprintf(stdout,"debug 2:");
-        		if(strcmp(temp->word,word)==0)
-				{	
-					found=true;
-				}	
-            		temp=temp->next;
+            	temp=temp->next;
             }
-        else
+            else
             {	//fprintf(stdout,"debug 3:");
             	break;
             }
-		
-	}
+            
+            
+    }    
+    free(temp);
 	fprintf(stdout,"DEBUG:EXIT check_word()\n");
 	return found;
 }
