@@ -16,6 +16,8 @@
 // Hash table is an array of linked lists.
 hashmap_t hashtable[HASH_SIZE];
 
+
+// Call it like this:
 char * read_file(const char* str)
 {   
     char * buffer = 0;
@@ -52,38 +54,44 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[])
 }
 
 bool check_word(const char* word, hashmap_t hashtable[])
-{	fflush(stdout);
-	printf("TRACE:Inside checkword\n");
+{	
+	fprintf(stdout,"DEBUG:ENTER check_word()\n");
+	fflush(stdout);
+	
 	int bucket=-1;
 	char* pch = word;
 	char* p;
-	printf("DEBUG 8:\n");
+	//fprintf(stdout,"DEBUG 9:\n");
 	if(strlen(word)>LENGTH || strlen(word)<=0)
 	{
-		printf("ERROR:Size violation, word does not exist\n");
+		fprintf(stdout,"ERROR:Size violation, word does not exist\n");
 		return false;
 	}
-	printf("DEBUG 7\n");
-	for ( ; *p; ++p) *p = tolower(*pch);
-	const char* lower = p;
-	printf("DEBUG :6\n");
-	printf("%s\n",lower);
+	fprintf(stdout,"DEBUG 8:\n");
+	//p = malloc(sizeof(pch)*strlen(p));
+	fprintf(stdout,"DEBUG 7\n");
+	
+	fprintf(stdout,"DEBUG :6\n");
+	//fprintf(stdout,"%s\n",lower);
 	//ignoring cases in the spellchecker
 
 
-	bucket= hash_function(lower);
+	bucket= hash_function(word);
 	//
 	hashmap_t head = hashtable[bucket];
 	hashmap_t temp = head;
 	bool found=false;
-	printf("DEBUG: bucket of hash %d\n",bucket);
+	fprintf(stdout,"DEBUG: bucket of hash %d\n",bucket);
 	while(temp->next!=NULL)
-	{
-		if(strcmp(temp->word,lower)==0)
+	{	//fprintf(stdout,"%s\n",temp->word);
+		if(strcmp(temp->word,word)==0)
 		{
 			found=true;
 		}
+		temp=temp->next;
 	}
+	free(p);
+	fprintf(stdout,"DEBUG:EXIT check_word()\n");
 	return found;
 }
 
@@ -92,6 +100,7 @@ bool check_word(const char* word, hashmap_t hashtable[])
 bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 {
     //inserting into hashmap_t
+   	fprintf(stdout,"DEBUG: ENTER load_dictionary()\n");
     int bucket=-1;
     int count=0;
     FILE *fp = fopen(dictionary_file, "r");
@@ -105,7 +114,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
      while(fgets(word1, sizeof(word1), fp) != NULL) {
          //fputs(chunk, stdout);
 
-        //printf(">>%s<<\n",word1);
+        //fprintf(stdout,">>%s<<\n",word1);
         bucket = hash_function(word1);
         hashmap_t head = hashtable[bucket];
         if(head==NULL)
@@ -113,38 +122,40 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         	//head is empty
         	hashtable[bucket] = (node *) malloc(sizeof(node));
         	hashtable[bucket]->next = NULL;
-        	//printf("Head attained\n");
+        	//fprintf(stdout,"Head attained\n");
         	if(strlen(word1)<LENGTH)
         	{	
         		//change strcpy
-            	strcpy(hashtable[bucket]->word,word1);
+            	snprintf(hashtable[bucket]->word,sizeof(word1)-2,word1);
+
             	
         	}
         	else
         	{
-        		printf("Error: Could not add word due to size violation");
-        		printf("Exiting......");
+        		fprintf(stdout,"Error: Could not add word due to size violation");
+        		fprintf(stdout,"Exiting......");
         	}
+        	//fprintf(stdout,"DEBUG: word %s placed in bucket:%d at head: word_count=%ld\n",word1,bucket,count);
         }
         else
         {
         	 hashmap_t temp=head;
 
-        	//printf("bucket attained %d\n",bucket);
+        	//fprintf(stdout,"bucket attained %d\n",bucket);
 
         	int pos=0;
         	while(temp->next!=NULL)
         	{   pos=pos+1;
-        		//printf("%s\n",word1);
-           	 	//printf("Inserted word %s at bucket %d, %d POS\n",word1,bucket,pos);
-        		//printf("Possible infinite loop\n");
+        		//fprintf(stdout,"%s\n",word1);
+           	 	//fprintf(stdout,"Inserted word %s at bucket %d, %d POS\n",word1,bucket,pos);
+        		//fprintf(stdout,"Possible infinite loop\n");
             	temp=temp->next;
             
         	}
         	hashmap_t newnode = (node *) malloc(sizeof(node));
-        	if(strlen(word1)<LENGTH)
+        	if(strlen(word1)<=LENGTH)
         	{
-            	strncpy(newnode->word,word1,strlen(word1)-1);
+            	snprintf(newnode->word,sizeof(word1)-2,word1);
             
         	}
         	newnode->next=NULL;
@@ -152,17 +163,18 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 
         	//if(bucket==966)
         	//{
-        	//printf("DEBUG: word %s placed in bucket:%d at pos %d: word_count=%ld\n",word1,bucket,pos+1,count);
-        	//printf("\n>>>>>\n");
+        	//fprintf(stdout,"DEBUG: word %s placed in bucket:%d at pos %d: word_count=%ld\n",word1,bucket,pos+1,count);
+        	//fprintf(stdout,"\n>>>>>\n");
         	
 
         }
-        //printf("DEBUG:3");
+        //fprintf(stdout,"DEBUG:3");
         count++;
          //fputs("|*\n", stdout);  // marker string used to show where the content of the chunk array has ended
      }
  
      fclose(fp);
+     fprintf(stdout,"DEBUG: EXIT load_dictionary()\n");
      return true;
  	
 }
@@ -170,31 +182,27 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 //check function to print all words in a bucket (same hashfunction value)
 int print_bucket(int bucket,hashmap_t x[])
 {	
-	printf("DEBUG:inside print_bucket");
+	fprintf(stdout,"DEBUG: ENTER print_bucket()\n");
     hashmap_t head = hashtable[bucket];
     hashmap_t temp = head;
     while(temp!=NULL)
-        {   
-        	if(temp->word!=NULL)
-        	{	printf("debug 1:");
-        		printf("%s-->",temp->word);
-        	}
-            
+        {           
             if(temp->next!=NULL)
-            {	printf("debug 2:");
+            {	//fprintf(stdout,"debug 2:");
             	temp=temp->next;
             }
             else
-            {	printf("debug 3:");
+            {	//fprintf(stdout,"debug 3:");
             	break;
             }
             
             
         }
-        printf("DEBUG 4");
+        
         free(temp);
 
-        //printf("\n");
+        //fprintf(stdout,"\n");
+        fprintf(stdout,"DEBUG: EXIT print_bucket()\n");
         return 0;
 }
 
