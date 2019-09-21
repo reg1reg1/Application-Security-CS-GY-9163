@@ -7,8 +7,25 @@
 #include <ctype.h>
 #include "dictionary.h"
 node* hashtable[HASH_SIZE];
-
+char* mispelled[2001];
 //Takes the name of file to be read as Input
+void print_mispelled(char * mispelled[])
+{	
+	fprintf(stdout,"DEBUG:spell.c:ENTER printf_mispelled()\n");
+	char **ptr;
+	if(!mispelled)
+	{
+		fprintf(stdout,"No mispelled words");
+	}
+	ptr = mispelled;
+	while(*ptr!="")
+	{
+		  printf ("Mispelled words\n>:%s\n",  *ptr++); //* takes precedence over ++
+	}
+	fprintf(stdout,"DEBUG:spell.c:EXIT printf_mispelled()\n");
+	return;
+}
+
 
 int main()
 {
@@ -17,16 +34,12 @@ load_dictionary(s,hashtable);
 int x =900;
 fprintf(stdout,"Contents of bucket %d\n",x);
 print_bucket(x,hashtable);
-printf("DEBUG: 5\n");
-//bucket 1331
-if(check_word("improvements",hashtable))
-{
-	printf("Spelled correctly\n");
-}
-else
-{
-	printf("Spelled incorrectly\n");
-}
+check_word("bucket",hashtable);
+FILE *fp = fopen("check.txt", "r");
+check_words(fp,hashtable,mispelled);
+ int i=0;
+
+//print_mispelled(mispelled);
 //printf("%d",check_life());
 
 return 0;

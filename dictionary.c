@@ -23,6 +23,7 @@ hashmap_t hashtable[HASH_SIZE];
 int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[])
 {
 	//
+	fprintf(stdout,"DEBUG:ENTER check_words()\n");
 	int bucket=-1;
     int count=0;
    
@@ -31,12 +32,41 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[])
           exit(1);
      }
  
-     char word1[128];
+     char word1[46];
  
-     while(fgets(word1, sizeof(word1), fp) != NULL) {
+     while(EOF != fscanf(fp, "%[^\n]\n", word1)) {
+     	
+     	
+     	
+        int count =0;
+        
+		fprintf(stdout,"CHECKING %s\n",word1);
+		const char* checkword = word1; 
+		
 
-     }
-    return 0;
+		if(check_word(checkword,hashtable))
+		{
+			fprintf(stdout,"Correct spelling \n",checkword);
+		}
+		else
+		{	if(count>1000)
+			{
+
+				fprintf(stdout,"WARN: Max misspelled words limit reached\n");
+				return -1;
+			}
+			misspelled[count]=malloc(strlen(word1)+1);
+			snprintf(misspelled[count],sizeof(word1),word1);
+			fprintf(stdout,"MISSPELLED >%s\n",misspelled[count]);
+			count+=1;
+		}
+	}
+	int i;
+	fprintf(stdout,"DEBUG: START Mispelled words\n");
+	
+    fprintf(stdout,"DEBUG:MISPELLED check_words()\n");
+	fprintf(stdout,"DEBUG:EXIT check_words()\n");
+    return count;
 }
 
 bool check_word(const char* word, hashmap_t hashtable[])
@@ -53,11 +83,7 @@ bool check_word(const char* word, hashmap_t hashtable[])
 		fprintf(stdout,"ERROR:Size violation, word does not exist\n");
 		return false;
 	}
-	fprintf(stdout,"DEBUG 8:\n");
-	//p = malloc(sizeof(pch)*strlen(p));
-	fprintf(stdout,"DEBUG 7\n");
 	
-	fprintf(stdout,"DEBUG :6\n");
 	//fprintf(stdout,"%s\n",lower);
 	//ignoring cases in the spellchecker
 
@@ -94,21 +120,18 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
           exit(1);
      }
  
-     char word1[128];
+     char word1[46];
  
-     while(fgets(word1, sizeof(word1), fp) != NULL) {
+     while(EOF != fscanf(fp, "%[^\n]\n", word1)) {
          //fputs(chunk, stdout);
 
         //fprintf(stdout,">>%s<<\n",word1);
 
         
 
-        char* newword =0;
-        newword = (char*)malloc(strlen(word1));
-		memcpy(newword,word1,strlen(word1)-1);
-		newword[strlen(word1)-1] = 0;
+   		
 
-		bucket = hash_function(newword);
+		bucket = hash_function(word1);
         hashmap_t head = hashtable[bucket];
 
         if(head==NULL)
@@ -119,10 +142,10 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         	//fprintf(stdout,"Head attained\n");
         	
         	
-        	if(strlen(newword)<LENGTH)
+        	if(strlen(word1)<LENGTH)
         	{	
         		//change strcpy
-            	snprintf(hashtable[bucket]->word,sizeof(hashtable[bucket]->word),newword);
+            	snprintf(hashtable[bucket]->word,sizeof(hashtable[bucket]->word),word1);
 
             	
         	}
@@ -131,7 +154,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         		fprintf(stdout,"Error: Could not add word due to size violation");
         		fprintf(stdout,"Exiting......");
         	}
-        	fprintf(stdout,"DEBUG: word %s placed in bucket:%d at head: word_count=%ld\n",hashtable[bucket]->word,bucket,count);
+        	//fprintf(stdout,"DEBUG: word %s placed in bucket:%d at head: word_count=%ld\n",hashtable[bucket]->word,bucket,count);
         }
         else
         {
@@ -151,7 +174,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         	hashmap_t newnode = (node *) malloc(sizeof(node));
         	if(strlen(word1)<=LENGTH)
         	{
-            	snprintf(newnode->word,sizeof(newnode->word),newword);
+            	snprintf(newnode->word,sizeof(newnode->word),word1);
             
         	}
         	newnode->next=NULL;
@@ -182,7 +205,8 @@ int print_bucket(int bucket,hashmap_t x[])
     hashmap_t head = hashtable[bucket];
     hashmap_t temp = head;
     while(temp!=NULL)
-        {           
+        {         
+        	fprintf(stdout,"%s\n",temp->word);  
             if(temp->next!=NULL)
             {	//fprintf(stdout,"debug 2:");
             	temp=temp->next;
