@@ -71,15 +71,11 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[])
 
 bool check_word(const char* word, hashmap_t hashtable[])
 {	
-	fprintf(stdout,"DEBUG:ENTER check_word()\n");
-	fprintf(stdout,"DEBUG: CHECKING word %s\n",word);
-	
-	int bucket=-1;
-	bool found = false;
-	bucket = hash_function(word);
+	int bucket=756;
+	fprintf(stdout,"DEBUG: ENTER print_bucket()\n");
     hashmap_t head = hashtable[bucket];
     hashmap_t temp = head;
-    fprintf(stdout, "DEBUG: BUCKET BEING CHECKED %d\n", bucket);
+
     while(temp!=NULL)
         {         
         	fprintf(stdout,"%s\n",temp->word);  
@@ -93,10 +89,13 @@ bool check_word(const char* word, hashmap_t hashtable[])
             }
             
             
-    }    
-    free(temp);
-	fprintf(stdout,"DEBUG:EXIT check_word()\n");
-	return found;
+        }
+        
+        free(temp);
+
+        //fprintf(stdout,"\n");
+        fprintf(stdout,"DEBUG: EXIT print_bucket()\n");
+        return false;
 }
 
 
