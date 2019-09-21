@@ -90,7 +90,6 @@ bool check_word(const char* word, hashmap_t hashtable[])
 		}
 		temp=temp->next;
 	}
-	free(p);
 	fprintf(stdout,"DEBUG:EXIT check_word()\n");
 	return found;
 }
