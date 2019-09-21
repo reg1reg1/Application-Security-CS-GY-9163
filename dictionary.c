@@ -91,7 +91,7 @@ bool check_word(const char* word, hashmap_t hashtable[])
             
         }
         
-        free(temp);
+        //free(temp);
 
         //fprintf(stdout,"\n");
         fprintf(stdout,"DEBUG: EXIT print_bucket()\n");
