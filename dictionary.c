@@ -177,7 +177,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
             	snprintf(newnode->word,sizeof(newnode->word),word1);
             
         	}
-        	newnode->next=NULL;
+        	newnode->next=0;
         	temp->next = newnode;
 
         	//if(bucket==966)
