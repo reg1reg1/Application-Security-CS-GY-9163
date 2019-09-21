@@ -31,7 +31,7 @@ int main()
 {
 char s[]="wordlist.txt";
 load_dictionary(s,hashtable);
-int x =900;
+int x =756;
 fprintf(stdout,"Contents of bucket %d\n",x);
 print_bucket(x,hashtable);
 check_word("bucket",hashtable);
