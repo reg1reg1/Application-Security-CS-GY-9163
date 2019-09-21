@@ -95,7 +95,7 @@ bool check_word(const char* word, hashmap_t hashtable[])
 	bool found=false;
 	fprintf(stdout,"DEBUG: bucket of hash %d\n",bucket);
 	while(temp!=NULL)
-	{	//fprintf(stdout,"%s\n",temp->word);
+	{	fprintf(stdout,"CHECKING %s\n",temp->word);
 		if(strcmp(temp->word,word)==0)
 		{	
 			found=true;
