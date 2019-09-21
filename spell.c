@@ -34,7 +34,7 @@ load_dictionary(s,hashtable);
 int x =756;
 fprintf(stdout,"Contents of bucket %d\n",x);
 print_bucket(x,hashtable);
-//check_word("bucket",hashtable);
+check_word("yodeler",hashtable);
 FILE *fp = fopen("check.txt", "r");
 //check_words(fp,hashtable,mispelled);
  int i=0;
