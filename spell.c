@@ -108,7 +108,20 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 	fflush(stdout);
 	fclose(fp);
 }
+//edge cases where strings without letters are given pass(spaces.new line only) 
+bool newLineOrSpaces(word)
+	{
 
+		return false;
+	}
+bool justANumber(word)
+{
+	return false;
+}
+void convertToLower(char x[])
+{
+
+}
 
 bool check_word(const char* word, hashmap_t hashtable[])
 {	
