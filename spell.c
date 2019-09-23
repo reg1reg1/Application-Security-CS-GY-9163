@@ -302,11 +302,12 @@ int main()
 	FILE *fp = fopen("check.txt", "r");
 	//check_words(fp,hashtable,mispelled);
 	fclose(fp);
+	free(fp);
 	//print_mispelled(mispelled);
 	fp = fopen("check.txt", "r");
 	check_words(fp,hashtable,mispelled);
  	fclose(fp);
-
+ 	free(fp);
 	//print_mispelled(mispelled);
 	//printf("%d",check_life());
 
