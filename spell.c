@@ -187,6 +187,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 		memcpy(newword,word1,strlen(word1)-1);
 		newword[strlen(word1)-1] = 0;
 
+
 		bucket = hash_function(newword);
         hashmap_t head = hashtable[bucket];
 
@@ -202,7 +203,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         	{	
         		//change strcpy
             	snprintf(hashtable[bucket]->word,sizeof(hashtable[bucket]->word),newword);
-
+            	free(newword);
             	
         	}
         	else
@@ -231,7 +232,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         	if(strlen(word1)<=LENGTH)
         	{
             	snprintf(newnode->word,sizeof(newnode->word),newword);
-            
+            	free(newword);
         	}
         	newnode->next=0;
         	temp->next = newnode;
