@@ -295,17 +295,9 @@ int main()
 {
 	char s[]="wordlist.txt";
 	load_dictionary(s,hashtable);
-	int x =966;
-	//fprintf(stdout,"Contents of bucket %d\n",x);
-	//print_bucket(x,hashtable);
-	//check_word("yodeler",hashtable);
-	//print_mispelled(mispelled);
 	fp = fopen("check.txt", "r");
 	check_words(fp,hashtable,mispelled);
- 	
- 	
-	//print_mispelled(mispelled);
-	//printf("%d",check_life());
+	
 
 	return 0;
 }
