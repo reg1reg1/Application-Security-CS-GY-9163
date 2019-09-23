@@ -14,76 +14,101 @@ char* mispelled[2001];
 // Maps a word to an integer value to place it in the hash table.
 // Sum the value of each character in the word, then find the 
 // remainder after dividing by the size of the hash table.
-int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[])
-{
-	//
-	fprintf(stdout,"DEBUG:ENTER check_words()\n");
-	int bucket=-1;
-    int count=0;
-   
- 	if(fp == NULL) {
+int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
+{	fflush(stdout);
+	fprintf(stdout,"DEBUG:Enter check_words_spaces\n");
+	char word[47];
+	char c;
+	if(fp == NULL) {
          perror("Unable to open file!");
           exit(1);
      }
- 
-    char newword[46];
- 	
-    while(fgets(newword, sizeof(newword), fp) != NULL) {
-     	
-     	char* word1 =0;
-        word1 = (char*)malloc(strlen(newword));
-		memcpy(word1,newword,strlen(newword)-1);
-		word1[strlen(newword)-1] = 0;
-     	
-        
+	int index = 0;
+	int count=0;
+	do {
+  		c = (char)fgetc(fp);
+  		fprintf(stdout,"Considering..Index >%d..{LETTER}<<%c>>\n",index,c);
+  		if(c == ' ' || c == '\n' || c == '\0' || c == '\t') {
+    		//wordfunction(word)
+    		fprintf(stdout,"DEBUG: IF Entered\n");
+    		fprintf(stdout,"INFO: Checking word->***%s***%d\n",word,strlen(word));
+    		const char* w1 = word;
+    		//consider the word spelling
+    		if(check_word(w1,hashtable))
+    		{
+    			fprintf(stdout,"Correct spelling <%s>\n",word);
 
-        
-		fprintf(stdout,"DEBUG: CHECKING %s|\n",word1);
-		fprintf(stdout,"DEBUG: Current Mispelled word count %d",count);
-		const char* checkword = word1; 
-		long long int wordLength= strlen(word1);
-		fprintf(stdout,"DEBUG:1 \n");
-		//handle size violation
-		if(wordLength<=0 || wordLength>46)
-		{	
-			//skip till end of line once the word length is violated
-			int skipbytes= (wordLength-45)*sizeof(char);
-			
-			fprintf(stdout,"Storing mispelled word at index %d \n",count);
-			misspelled[count]=malloc(46);
-			
+    		}
+    		else
+    		{	
 
-			snprintf(misspelled[count],strlen(word1)+1,word1);
-			fprintf(stdout,"DEBUG: MISSPELLED >%s\n",misspelled[count]);
-			
-			fprintf(stdout,"DEBUG:Size violation caused by word %s\n",word1);
-			count+=1;
-		}
+    				misspelled[count]=malloc(strlen(word)+1);
+					snprintf(misspelled[count],strlen(word)+1,word);
+    				fprintf(stdout,"Mispelled: |%s| Added to mispelled \n",misspelled[count]);
+    				count+=1;
+    		}
+    		word[0] = 0; //Reset word
+    		index = 0;
+  		} 
+  		else 
+  		{	//fprintf(stdout,"\n DEBUG: ELSE Entered %d \n",index);
+  			//increment the word pointer and keep advancing the null terminator
+    		char k =c;
+    		if(index>45)
+    		{	//fprintf(stdout,"Begin Char ignore frm>> %c\n",c);
+    			while(true){
+    				c = (char)fgetc(fp);
+    				
+    				//fprintf(stdout,"Ignoring |%c|",c);
+    			if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c==EOF)
+    			{
+    				break;
+    			}	
 
+    			}
+    			//fprintf(stdout,"Stopping char ignore at %c\n",c);
+    			
+    			word[index++]='~';
+    			word[index]='\0';
+    			index=0;
+    			misspelled[count]=malloc(strlen(word)+1);
+				snprintf(misspelled[count],strlen(word)+1,word);
+    			fprintf(stdout,"Mispelled: |%s|, truncated and added to mispelled \n",misspelled[count]);
+    			count+=1;
+    			
+    		}
+    		else
+    		{
+    			word[index++] = c;
+    			word[index] = 0;
+    		}
+    		//fprintf(stdout,"DEBUG: ||%c::%d||%s||",c,index,word);
+  		}	
+  	
+	} while(c != EOF);
+	if(word)
+	{
+			const char* w2 = word;
+    		//consider the word spelling
+    		if(check_word(w2,hashtable))
+    		{
+    			fprintf(stdout,"Correct spelling <%s>\n",word);
 
-		if(check_word(checkword,hashtable))
-		{
-			fprintf(stdout,"DEBUG: Word %s CORRECT \n",word1);
-		}
-		else
-		{	if(count>1000)
-			{
-				fprintf(stdout,"DEBUG: Total mispelled words %d\n",count);
-				fprintf(stdout,"WARN: Max misspelled words limit reached\n");
-				return -1;
-			}
-			fprintf(stdout,"Storing mispelled word at index %d \n",count);
-			misspelled[count]=malloc(strlen(word1)+1);
-			
-			snprintf(misspelled[count],strlen(word1)+1,word1);
-			fprintf(stdout,"DEBUG: MISSPELLED >%s\n",misspelled[count]);
-			count+=1;
-		}
-		fprintf(stdout,"DEBUG: Total mispelled words %d\n",count);
+    		}
+    		else
+    		{	
+
+    				misspelled[count]=malloc(strlen(word)+1);
+					snprintf(misspelled[count],strlen(word)+1,word);
+    				fprintf(stdout,"Mispelled: |%s| Added to mispelled \n",misspelled[count]);
+    				count+=1;
+    		}
 	}
-	
-    return count;
+	fprintf(stdout,"DEBUG:Exit check_words_spaces\n");
+	fflush(stdout);
+	fclose(fp);
 }
+
 
 bool check_word(const char* word, hashmap_t hashtable[])
 {	
@@ -93,7 +118,7 @@ bool check_word(const char* word, hashmap_t hashtable[])
 	int bucket=-1;
 	
 	//fprintf(stdout,"DEBUG 9:\n");
-	if(strlen(word)>LENGTH || strlen(word)<=0)
+	if(strlen(word)>LENGTH)
 	{
 		fprintf(stdout,"ERROR:Size violation, word does not exist\n");
 		return false;
@@ -210,7 +235,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         count++;
          //fputs("|*\n", stdout);  // marker string used to show where the content of the chunk array has ended
      }
- 
+ 	
      fclose(fp);
      fprintf(stdout,"DEBUG: EXIT load_dictionary()\n");
      return true;
@@ -245,15 +270,8 @@ void print_mispelled(char * mispelled[])
 {	
 	fprintf(stdout,"DEBUG:spell.c:ENTER printf_mispelled()\n");
 	char **ptr;
-	if(!mispelled)
-	{
-		fprintf(stdout,"No mispelled words");
-	}
-	ptr = mispelled;
-	while(*ptr!="")
-	{
-		  printf ("Mispelled words\n>:%s\n",  *ptr++); //* takes precedence over ++
-	}
+	ptr= mispelled;
+	fprintf(stdout,"Check % s",*(ptr+1));
 	fprintf(stdout,"DEBUG:spell.c:EXIT printf_mispelled()\n");
 	return;
 }
@@ -262,18 +280,22 @@ void print_mispelled(char * mispelled[])
 
 int main()
 {
-char s[]="wordlist.txt";
-load_dictionary(s,hashtable);
-int x =966;
-fprintf(stdout,"Contents of bucket %d\n",x);
-print_bucket(x,hashtable);
-check_word("yodeler",hashtable);
-FILE *fp = fopen("check.txt", "r");
-check_words(fp,hashtable,mispelled);
- int i=0;
+	char s[]="wordlist.txt";
+	load_dictionary(s,hashtable);
+	int x =966;
+	//fprintf(stdout,"Contents of bucket %d\n",x);
+	//print_bucket(x,hashtable);
+	//check_word("yodeler",hashtable);
+	FILE *fp = fopen("check.txt", "r");
+	//check_words(fp,hashtable,mispelled);
+	fclose(fp);
+	//print_mispelled(mispelled);
+	fp = fopen("check.txt", "r");
+	check_words(fp,hashtable,mispelled);
+ 	fclose(fp);
 
-//print_mispelled(mispelled);
-//printf("%d",check_life());
+	//print_mispelled(mispelled);
+	//printf("%d",check_life());
 
-return 0;
+	return 0;
 }
