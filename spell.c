@@ -299,14 +299,10 @@ int main()
 	//fprintf(stdout,"Contents of bucket %d\n",x);
 	//print_bucket(x,hashtable);
 	//check_word("yodeler",hashtable);
-	FILE *fp = fopen("check.txt", "r");
-	//check_words(fp,hashtable,mispelled);
-	fclose(fp);
-	free(fp);
 	//print_mispelled(mispelled);
 	fp = fopen("check.txt", "r");
 	check_words(fp,hashtable,mispelled);
- 	fclose(fp);
+ 	
  	free(fp);
 	//print_mispelled(mispelled);
 	//printf("%d",check_life());
