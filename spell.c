@@ -53,7 +53,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
   		else 
   		{	//fprintf(stdout,"\n DEBUG: ELSE Entered %d \n",index);
   			//increment the word pointer and keep advancing the null terminator
-    		char k =c;
+    		
     		if(index>45)
     		{	//fprintf(stdout,"Begin Char ignore frm>> %c\n",c);
     			while(true){
@@ -86,7 +86,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
   		}	
   	
 	} while(c != EOF);
-	if(word)
+	if(word!=NULL)
 	{
 			const char* w2 = word;
     		//consider the word spelling
@@ -106,6 +106,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 	}
 	fprintf(stdout,"DEBUG:Exit check_words_spaces\n");
 	fflush(stdout);
+	return count;
 	
 }
 //edge cases where strings without letters are given pass(spaces.new line only) 
@@ -284,7 +285,7 @@ void print_mispelled(char * mispelled[])
 	fprintf(stdout,"DEBUG:spell.c:ENTER printf_mispelled()\n");
 	char **ptr;
 	ptr= mispelled;
-	fprintf(stdout,"Check % s",*(ptr+1));
+	fprintf(stdout,"Check %s",*(ptr+1));
 	fprintf(stdout,"DEBUG:spell.c:EXIT printf_mispelled()\n");
 	return;
 }
@@ -295,6 +296,7 @@ int main()
 {
 	char s[]="wordlist.txt";
 	load_dictionary(s,hashtable);
+	FILE *fp;
 	fp = fopen("check.txt", "r");
 	check_words(fp,hashtable,mispelled);
 	
