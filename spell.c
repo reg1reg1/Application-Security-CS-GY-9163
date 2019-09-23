@@ -303,7 +303,7 @@ int main()
 	fp = fopen("check.txt", "r");
 	check_words(fp,hashtable,mispelled);
  	
- 	free(fp);
+ 	
 	//print_mispelled(mispelled);
 	//printf("%d",check_life());
 
