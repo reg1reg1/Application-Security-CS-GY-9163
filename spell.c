@@ -300,7 +300,7 @@ int main()
 	FILE *fp;
 	fp = fopen("check.txt", "r");
 	check_words(fp,hashtable,mispelled);
-	
-
+	free(hashtable);
+	free(mispelled);
 	return 0;
 }
