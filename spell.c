@@ -7,7 +7,7 @@
 #include <ctype.h>
 #include "dictionary.h"
 node* hashtable[HASH_SIZE];
-char* mispelled[2001];
+char* mispelled[1005];
 //Takes the name of file to be read as Input
 
 
@@ -104,20 +104,44 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
     				count+=1;
     		}
 	}
+	
 	fprintf(stdout,"DEBUG:Exit check_words_spaces\n");
 	fflush(stdout);
 	return count;
 	
 }
-//edge cases where strings without letters are given pass(spaces.new line only) 
+
 bool newLineOrSpaces(const char* word)
 	{
-
-		return false;
+		bool condition=true;
+		int length = strlen(word);
+		int i=0;
+		while(i<length)
+		{
+			if(!(word[i]=='\t' || word[i]==' ' || word[i]=='\n' || word[i]=='\r' || word[i]==EOF))
+			{
+				condition=false;
+				break;
+			}
+			i++;
+		}
+		return condition;
 	}
-bool justANumber(const char* word)
-{
-	return false;
+bool isNumber(const char* word)
+{	
+	bool condition=true;
+	int length=strlen(word);
+	int i=0;
+	while(i<length)
+	{
+		if(!isdigit(word[i]))
+		{
+			condition=false;
+			break;
+		}
+		i++;
+	}
+	return condition;
 }
 void convertToLower(char x[])
 {
@@ -137,7 +161,15 @@ bool check_word(const char* word, hashmap_t hashtable[])
 		fprintf(stdout,"ERROR:Size violation, word does not exist\n");
 		return false;
 	}
-	
+	if(isNumber(word))
+	{
+		return true;
+	}
+	if(newLineOrSpaces(word))
+	{
+		return true;
+	}
+
 	//fprintf(stdout,"%s\n",lower);
 	//ignoring cases in the spellchecker
 
@@ -281,12 +313,18 @@ int print_bucket(int bucket,hashmap_t x[])
         return 0;
 }
 
-void print_mispelled(char * mispelled[])
+void print_mispelled(char * mispelled[],int count)
 {	
 	fprintf(stdout,"DEBUG:spell.c:ENTER printf_mispelled()\n");
 	char **ptr;
 	ptr= mispelled;
-	fprintf(stdout,"Check %s",*(ptr+1));
+	int i=0;
+	while(i<count)
+	{
+		fprintf(stdout,"<<%s>>",*(ptr+i));
+		i+=1;
+	}
+	
 	fprintf(stdout,"DEBUG:spell.c:EXIT printf_mispelled()\n");
 	return;
 }
@@ -296,11 +334,12 @@ void print_mispelled(char * mispelled[])
 int main()
 {
 	char s[]="wordlist.txt";
+	int x=0;
 	load_dictionary(s,hashtable);
 	FILE *fp;
 	fp = fopen("check.txt", "r");
-	check_words(fp,hashtable,mispelled);
-	free(hashtable);
-	free(mispelled);
+	x=check_words(fp,hashtable,mispelled);
+	fprintf(stdout,"Mispell count %d\n",x);
+	print_mispelled(mispelled,x);
 	return 0;
 }
