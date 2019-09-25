@@ -354,23 +354,3 @@ void print_mispelled(char * mispelled[],int count)
 	fprintf(stdout,"DEBUG:spell.c:EXIT printf_mispelled()\n");
 	return;
 }
-
-
-
-int main()
-{
-	char s[]="wordlist.txt";
-	
-	int x=0;
-	load_dictionary(s,hashtable);
-	FILE *fp;
-	
-	fp = fopen("check.txt", "r");
-
-	x=check_words(fp,hashtable,mispelled);
-	fclose(fp);
-	fprintf(stdout,"Mispell count %d\n",x);
-	print_mispelled(mispelled,x);
-	
-	return 0;
-}
