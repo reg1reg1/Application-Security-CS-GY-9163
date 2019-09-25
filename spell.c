@@ -1,15 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include "dictionary.h"
 
-
-node* hashtable[HASH_SIZE];
-char* mispelled[1005];
 //Takes the name of file to be read as Input
 
 
@@ -321,7 +316,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 void print_bucket(int bucket,hashmap_t x[])
 {	
 	fprintf(stdout,"DEBUG: ENTER print_bucket()\n");
-    hashmap_t head = hashtable[bucket];
+    hashmap_t head = x[bucket];
     hashmap_t temp = head;
     while(temp!=NULL)
         {         

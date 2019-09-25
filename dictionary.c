@@ -14,7 +14,6 @@
 #include "dictionary.h"
 
 // Hash table is an array of linked lists.
-hashmap_t hashtable[HASH_SIZE];
 
 int hash_function(const char* word)
 {
