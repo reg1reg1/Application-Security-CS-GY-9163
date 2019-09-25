@@ -242,7 +242,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 
 		//const char* lower = convertToLower(newword,strlen(newword));
 
-		bucket = hash_function(lower);
+		bucket = hash_function(newword);
         hashmap_t head = hashtable[bucket];
 
         if(head==NULL)
