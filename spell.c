@@ -239,7 +239,14 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         newword = (char*)malloc(strlen(word1));
 		memcpy(newword,word1,strlen(word1)-1);
 		newword[strlen(word1)-1] = 0;
-
+		int i=0;
+		for(i=0;i<strlen(newword);i++)
+		{
+			if(isalpha(newword[i]))
+			{
+			newword[i]=tolower(newword[i]);
+			}
+		}
 		//const char* lower = convertToLower(newword,strlen(newword));
 
 		bucket = hash_function(newword);
