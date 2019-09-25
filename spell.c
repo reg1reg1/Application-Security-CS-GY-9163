@@ -146,22 +146,7 @@ bool isNumber(const char* word)
 	fprintf(stdout,"DEBUG:Exit isNumber condition %s\n",condition ? "true" : "false");
 	return condition;
 }
-//function to ignore case when alphabets are involved
-char* convertToLower(const char* word, int size_word)
-{	
-	char *x= (char*)malloc(strlen(word));
-	//pointing to string literal passed
-	int i=0;
-	for(i=0;i<size_word;i++)
-	{
-		if(isalpha(word[i]))
-		{
-			x[i]=tolower(word[i]);
-		}
-	}
-	x[i]='\0';
-	return x;
-}
+
 
 //length check is already applied in check_words function so not needed here
 bool check_word(const char* word, hashmap_t hashtable[])
@@ -191,10 +176,19 @@ bool check_word(const char* word, hashmap_t hashtable[])
 
 	//fprintf(stdout,"%s\n",lower);
 	//ignoring cases in the spellchecker
-
-	const char* lower=convertToLower(word,strlen(word));
-	//fprintf(stdout,"LOWERCASE> ||%s||\n",lower);
+	char *lower=(char*)malloc(strlen(word));
+	memcpy(lower,word,strlen(word));
+	int i=0;
+	for(i=0;i<strlen(lower);i++)
+		{
+			if(isalpha(lower[i]))
+			{
+			lower[i]=tolower(lower[i]);
+			}
+		}
+	
 	bucket= hash_function(lower);
+	
 	//
 	hashmap_t head = hashtable[bucket];
 	hashmap_t temp = head;
@@ -203,12 +197,13 @@ bool check_word(const char* word, hashmap_t hashtable[])
 	while(temp!=NULL)
 	{	
 		//fprintf(stdout,"<<%s>>||<<%s>>\n",convertToLower(temp->word,strlen(temp->word)),lower);
-		if(strcmp(convertToLower(temp->word,strlen(temp->word)),lower)==0)
+		if(strcmp(temp->word,lower)==0)
 		{	
 			found=true;
 		}
 		temp=temp->next;
 	}
+	free(lower);
 	fprintf(stdout,"DEBUG:EXIT check_word()\n");
 	return found;
 }
@@ -363,16 +358,15 @@ void print_mispelled(char * mispelled[],int count)
 int main()
 {
 	char s[]="wordlist.txt";
-	char y[]="CaNnibAL";
+	
 	int x=0;
 	load_dictionary(s,hashtable);
 	FILE *fp;
-	const char* ptr=y;
+	
 	fp = fopen("check.txt", "r");
 	x=check_words(fp,hashtable,mispelled);
 	fprintf(stdout,"Mispell count %d\n",x);
 	print_mispelled(mispelled,x);
-	char *p=convertToLower(ptr,strlen(y));
-	fprintf(stdout,"||%s||",p);
+	
 	return 0;
 }
