@@ -240,7 +240,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 		memcpy(newword,word1,strlen(word1)-1);
 		newword[strlen(word1)-1] = 0;
 
-		const char* lower = convertToLower(newword,strlen(newword));
+		//const char* lower = convertToLower(newword,strlen(newword));
 
 		bucket = hash_function(lower);
         hashmap_t head = hashtable[bucket];
