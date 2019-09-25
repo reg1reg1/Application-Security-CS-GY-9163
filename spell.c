@@ -200,6 +200,7 @@ bool check_word(const char* word, hashmap_t hashtable[])
 		if(strcmp(temp->word,lower)==0)
 		{	
 			found=true;
+			break;
 		}
 		temp=temp->next;
 	}
@@ -364,7 +365,9 @@ int main()
 	FILE *fp;
 	
 	fp = fopen("check.txt", "r");
+
 	x=check_words(fp,hashtable,mispelled);
+	fclose(fp);
 	fprintf(stdout,"Mispell count %d\n",x);
 	print_mispelled(mispelled,x);
 	
