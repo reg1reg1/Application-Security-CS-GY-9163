@@ -178,6 +178,7 @@ bool check_word(const char* word, hashmap_t hashtable[])
 	//ignoring cases in the spellchecker
 	char *lower=(char*)malloc(strlen(word));
 	memcpy(lower,word,strlen(word));
+	lower[strlen(word)]=0;
 	int i=0;
 	for(i=0;i<strlen(lower);i++)
 		{
