@@ -27,7 +27,6 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 	int count=0;
 	do {
   		c = (char)fgetc(fp);
-  		fprintf(stdout,"Considering..Index >%d..{LETTER}<<%c>>\n",index,c);
   		if(c == ' ' || c == '\n' || c == '\0' || c == '\t') {
     		//wordfunction(word)
     		fprintf(stdout,"DEBUG: IF Entered\n");
@@ -36,7 +35,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
     		//consider the word spelling
     		if(check_word(w1,hashtable))
     		{
-    			fprintf(stdout,"Correct spelling <%s>\n",word);
+    			fprintf(stdout,"INFO: Correct spelling <%s>\n",word);
 
     		}
     		else
@@ -44,7 +43,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 
     				misspelled[count]=malloc(strlen(word)+1);
 					snprintf(misspelled[count],strlen(word)+1,word);
-    				fprintf(stdout,"Mispelled: |%s| Added to mispelled \n",misspelled[count]);
+    				fprintf(stdout,"INFO: Mispelled: |%s| Added to mispelled \n",misspelled[count]);
     				count+=1;
     		}
     		word[0] = 0; //Reset word
@@ -92,7 +91,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
     		//consider the word spelling
     		if(check_word(w2,hashtable))
     		{
-    			fprintf(stdout,"Correct spelling <%s>\n",word);
+    			fprintf(stdout,"INFO: Correct spelling <%s>\n",word);
 
     		}
     		else
@@ -112,7 +111,8 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 }
 
 bool newLineOrSpaces(const char* word)
-	{
+	{	
+		fprintf(stdout,"DEBUG: Enter newLineOrSpaces\n");
 		bool condition=true;
 		int length = strlen(word);
 		int i=0;
@@ -125,10 +125,12 @@ bool newLineOrSpaces(const char* word)
 			}
 			i++;
 		}
+		fprintf(stdout,"DEBUG:Exit newLineOrSpaces condition %s\n",condition ? "true" : "false");
 		return condition;
 	}
 bool isNumber(const char* word)
 {	
+	fprintf(stdout,"DEBUG: Enter isNumber\n");
 	bool condition=true;
 	int length=strlen(word);
 	int i=0;
@@ -141,13 +143,27 @@ bool isNumber(const char* word)
 		}
 		i++;
 	}
+	fprintf(stdout,"DEBUG:Exit isNumber condition %s\n",condition ? "true" : "false");
 	return condition;
 }
-void convertToLower(char x[])
-{
-	return;
+//function to ignore case when alphabets are involved
+char* convertToLower(const char* word, int size_word)
+{	
+	char *x= (char*)malloc(strlen(word));
+	//pointing to string literal passed
+	int i=0;
+	for(i=0;i<size_word;i++)
+	{
+		if(isalpha(word[i]))
+		{
+			x[i]=tolower(word[i]);
+		}
+	}
+	x[i]='\0';
+	return x;
 }
 
+//length check is already applied in check_words function so not needed here
 bool check_word(const char* word, hashmap_t hashtable[])
 {	
 	fprintf(stdout,"DEBUG:ENTER check_word()\n");
@@ -162,27 +178,32 @@ bool check_word(const char* word, hashmap_t hashtable[])
 		return false;
 	}
 	if(isNumber(word))
-	{
+	{	
+		fprintf(stdout,"INFO: Word has only numbers");
 		return true;
 	}
 	if(newLineOrSpaces(word))
-	{
+	{	
+		fprintf(stdout,"INFO: Chunk has no characters except spaces,tabs,newline,carriages");
 		return true;
 	}
+
 
 	//fprintf(stdout,"%s\n",lower);
 	//ignoring cases in the spellchecker
 
-
-	bucket= hash_function(word);
+	const char* lower=convertToLower(word,strlen(word));
+	//fprintf(stdout,"LOWERCASE> ||%s||\n",lower);
+	bucket= hash_function(lower);
 	//
 	hashmap_t head = hashtable[bucket];
 	hashmap_t temp = head;
 	bool found=false;
 	fprintf(stdout,"DEBUG: bucket of hash %d\n",bucket);
 	while(temp!=NULL)
-	{	//fprintf(stdout,"%s\n",temp->word);
-		if(strcmp(temp->word,word)==0)
+	{	
+		//fprintf(stdout,"<<%s>>||<<%s>>\n",convertToLower(temp->word,strlen(temp->word)),lower);
+		if(strcmp(convertToLower(temp->word,strlen(temp->word)),lower)==0)
 		{	
 			found=true;
 		}
@@ -219,8 +240,9 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 		memcpy(newword,word1,strlen(word1)-1);
 		newword[strlen(word1)-1] = 0;
 
+		const char* lower = convertToLower(newword,strlen(newword));
 
-		bucket = hash_function(newword);
+		bucket = hash_function(lower);
         hashmap_t head = hashtable[bucket];
 
         if(head==NULL)
@@ -297,7 +319,7 @@ int print_bucket(int bucket,hashmap_t x[])
     hashmap_t temp = head;
     while(temp!=NULL)
         {         
-        	fprintf(stdout,"%s\n",temp->word);  
+        	//fprintf(stdout,"%s\n",temp->word);  
             if(temp->next!=NULL)
             {	//fprintf(stdout,"debug 2:");
             	temp=temp->next;
@@ -334,12 +356,16 @@ void print_mispelled(char * mispelled[],int count)
 int main()
 {
 	char s[]="wordlist.txt";
+	char y[]="CaNnibAL";
 	int x=0;
 	load_dictionary(s,hashtable);
 	FILE *fp;
+	const char* ptr=y;
 	fp = fopen("check.txt", "r");
 	x=check_words(fp,hashtable,mispelled);
 	fprintf(stdout,"Mispell count %d\n",x);
 	print_mispelled(mispelled,x);
+	char *p=convertToLower(ptr,strlen(y));
+	fprintf(stdout,"||%s||",p);
 	return 0;
 }
