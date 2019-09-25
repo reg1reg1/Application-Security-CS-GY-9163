@@ -1,7 +1,6 @@
 default: prog
 
-clean:
-	rm dictionary.o spell.o main.o test_main.o check_spell.o
+
 
 get-deps:
 	# Assuming Debian or Ubuntu here
