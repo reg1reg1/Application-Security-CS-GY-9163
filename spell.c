@@ -6,6 +6,8 @@
 #include <string.h>
 #include <ctype.h>
 #include "dictionary.h"
+
+
 node* hashtable[HASH_SIZE];
 char* mispelled[1005];
 //Takes the name of file to be read as Input
@@ -316,7 +318,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 }
 
 //check function to print all words in a bucket (same hashfunction value)
-int print_bucket(int bucket,hashmap_t x[])
+void print_bucket(int bucket,hashmap_t x[])
 {	
 	fprintf(stdout,"DEBUG: ENTER print_bucket()\n");
     hashmap_t head = hashtable[bucket];
@@ -336,7 +338,7 @@ int print_bucket(int bucket,hashmap_t x[])
             
         }
         fprintf(stdout,"DEBUG: EXIT print_bucket()\n");
-        return 0;
+        return ;
 }
 
 void print_mispelled(char * mispelled[],int count)

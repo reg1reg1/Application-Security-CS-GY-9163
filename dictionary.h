@@ -32,8 +32,10 @@ node;
 
 
 typedef node* hashmap_t;
-
-int print_bucket(int bucket,hashmap_t x[]);
+void print_mispelled(char * mispelled[],int count);
+bool newLineOrSpaces(const char* word);
+bool isNumber(const char* word);
+void print_bucket(int bucket,hashmap_t x[]);
 char * read_file(const char* file_name);
 /**
  * Array misspelled is populated with words that are misspelled. Returns the length of misspelled.
