@@ -217,7 +217,8 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
     FILE *fp = fopen(dictionary_file, "r");
  	if(fp == NULL) {
          perror("Unable to open file!");
-          exit(1);
+         return false;
+          
      }
  
      char word1[46];
@@ -344,7 +345,7 @@ void print_mispelled(char * mispelled[],int count)
 	int i=0;
 	while(i<count)
 	{
-		fprintf(stdout,"<<%s>>",*(ptr+i));
+		fprintf(stdout,"%d. <<%s>>\n",i+1,*(ptr+i));
 		i+=1;
 	}
 	

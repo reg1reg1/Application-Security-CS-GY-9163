@@ -5,20 +5,49 @@
 #include <ctype.h>
 #include "dictionary.h"
 node* hashtable[HASH_SIZE];
-char* mispelled[1005];
+char* misspelled[1005];
 
 
 int main(int argc, char *argv[] )
-{	char s[]="wordlist.txt";
+{	
 	
-	int x=0;
-	load_dictionary(s,hashtable);
-	FILE *fp;
-	
-	fp = fopen("check.txt", "r");
-	x=check_words(fp,hashtable,mispelled);
-	fprintf(stdout,"Mispell count %d\n",x);
-	print_mispelled(mispelled,x);
+	bool status=false;
+	int misspell_count=0;
+	if (argc!=3)
+	{
+		fprintf(stdout,"Usage incorrect!\n");
+		fprintf(stdout,"./spell_check <dictionary.txt> <file_to_be.txt>\n");
+		
+	}
+	else
+	{	
+		const char *dictionary = argv[1];
+		const char *wordlist = argv[2];
+		fprintf(stdout,"%s %s\n",dictionary,wordlist);
+		status=load_dictionary(dictionary,hashtable);
+		if(!status)
+		{
+			fprintf(stdout,"Could not load dictionary file,...\n Aborting ...\n");
+			return 0;
+		}
+		FILE *fp = fopen(wordlist,"r");
+		if(fp == NULL) {
+         perror("Unable to open file!");
+          exit(1);
+     	}
+     	misspell_count= check_words(fp,hashtable,misspelled);
+     	if(misspell_count>0)
+     	{	 fprintf(stdout,"\n\n\n\n**************%d Mispelled words***************\n",misspell_count);
+
+     		 print_mispelled(misspelled,misspell_count);
+     		 fprintf(stdout,"\n\n\n\n************************************************\n");
+     	}
+     	else
+     	{
+     		fprintf(stdout,"All words are spelled correctly!\n");
+     	}
+
+	}
 	return 0;
 }
 
