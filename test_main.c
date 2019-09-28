@@ -20,7 +20,6 @@ END_TEST
 START_TEST(test_check_word_normal)
 {   
     node* hashtable[HASH_SIZE];
-    char* misspelled[MAX_MISSPELLED];
     load_dictionary(DICTIONARY, hashtable);
     const char* correct_word = "Justice";
     const char* punctuation_word_2 = "pl.ace";
@@ -39,7 +38,6 @@ END_TEST
 START_TEST(test_check_word_case)
 {   
     node* hashtable[HASH_SIZE];
-    char* misspelled[MAX_MISSPELLED];
     load_dictionary(DICTIONARY, hashtable);
     const char* correct_word = "IEEE";
     const char* lcase = "ieee";
@@ -61,7 +59,6 @@ START_TEST(test_check_words_normal)
     expected[0] = "sogn";
     expected[1] = "skyn";
     expected[2] = "betta";
-    char *misspelled[MAX_MISSPELLED];
     FILE *fp = fopen("test1.txt", "r");
     int num_misspelled = check_words(fp, hashtable, misspelled);
     ck_assert(num_misspelled == 3);
@@ -93,7 +90,6 @@ START_TEST(test_check_words_huge)
     expected[0] = "oons";
     expected[1] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG~";
     expected[2] = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBCC~";
-    char *misspelled[MAX_MISSPELLED];
     FILE *fp = fopen("test_wordlist_2.txt", "r");
     int num_misspelled = check_words(fp, hashtable, misspelled);
     ck_assert(num_misspelled == 3);
@@ -119,6 +115,8 @@ check_word_suite(void)
     check_word_case = tcase_create("Core");
     tcase_add_test(check_word_case, test_check_word_normal);
     tcase_add_test(check_word_case, test_check_words_normal);
+    tcase_add_test(check_word_case, test_check_words_huge);
+    tcase_add_test(check_word_case, test_check_word_case);
     suite_add_tcase(suite, check_word_case);
 
     return suite;
