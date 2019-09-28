@@ -10,7 +10,6 @@
 START_TEST(test_dictionary_normal)
 {   
     node* hashtable[HASH_SIZE];
-    char* misspelled[MAX_MISSPELLED];
     ck_assert(load_dictionary(TESTDICT, hashtable));
     // Here we can test if certain words ended up in certain buckets
     // to ensure that our load_dictionary works as intended. I leave
@@ -25,14 +24,14 @@ START_TEST(test_check_word_normal)
     load_dictionary(DICTIONARY, hashtable);
     const char* correct_word = "Justice";
     const char* punctuation_word_2 = "pl.ace";
-    const char* numerics = "12345678"
-    const char* punctuation ="Where?"
-    const char* punctuation_only = ";!?.,"
+    const char* numerics = "12345678";
+    const char* punctuation ="Where?";
+    const char* punctuation_only = ";!?.,";
     ck_assert(check_word(correct_word, hashtable));
     ck_assert(!check_word(punctuation_word_2, hashtable));
     ck_assert(check_word(numerics, hashtable));
     ck_assert(check_word(punctuation, hashtable));
-    ck_assert(check_word(punctuation_only, hashtable))
+    ck_assert(check_word(punctuation_only, hashtable));
 }
 END_TEST
 
@@ -45,7 +44,7 @@ START_TEST(test_check_word_case)
     const char* correct_word = "IEEE";
     const char* lcase = "ieee";
     ck_assert(check_word(correct_word, hashtable));
-    ck_assert(check_word(lcase, hashtable))
+    ck_assert(check_word(lcase, hashtable));
 }
 END_TEST
 
