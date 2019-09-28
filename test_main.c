@@ -54,8 +54,8 @@ END_TEST
 
 START_TEST(test_check_words_normal)
 {   
-    memset(hashtable, 0, sizeof(hashtable));
-    memset(misspelled, 0, sizeof(misspelled));
+    node* hashtable[HASH_SIZE];
+    char* misspelled[MAX_MISSPELLED];
     load_dictionary(DICTIONARY, hashtable);
     char* expected[3];
     expected[0] = "sogn";
@@ -86,8 +86,8 @@ END_TEST
 **/
 START_TEST(test_check_words_huge)
 {   
-    memset(hashtable, 0, sizeof(hashtable));
-    memset(misspelled, 0, sizeof(misspelled));
+    node* hashtable[HASH_SIZE];
+    char* misspelled[MAX_MISSPELLED];
     load_dictionary(DICTIONARY, hashtable);
     char* expected[3];
     expected[0] = "oons";
