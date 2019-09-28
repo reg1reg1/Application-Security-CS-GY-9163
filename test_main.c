@@ -24,7 +24,7 @@ START_TEST(test_check_word_normal)
     const char* correct_word = "Justice";
     const char* punctuation_word_2 = "pl.ace";
     const char* numerics = "12345678";
-    const char* punctuation ="Where?";
+    const char* punctuation ="?";
     const char* punctuation_only = ";!?.,";
     ck_assert(check_word(correct_word, hashtable));
     ck_assert(!check_word(punctuation_word_2, hashtable));
