@@ -9,8 +9,8 @@ char* misspelled[MAX_MISSPELLED];
 
 START_TEST(test_dictionary_normal)
 {   
-    memset(myarray, 0, sizeof(hashtable));
-    memset(myarray, 0, sizeof(misspelled));
+    memset(hashtable, 0, sizeof(hashtable));
+    memset(misspelled, 0, sizeof(misspelled));
     ck_assert(load_dictionary(TESTDICT, hashtable));
     // Here we can test if certain words ended up in certain buckets
     // to ensure that our load_dictionary works as intended. I leave
@@ -20,8 +20,8 @@ END_TEST
 
 START_TEST(test_check_word_normal)
 {   
-    memset(myarray, 0, sizeof(hashtable));
-    memset(myarray, 0, sizeof(misspelled));
+    memset(hashtable, 0, sizeof(hashtable));
+    memset(misspelled, 0, sizeof(misspelled));
     load_dictionary(DICTIONARY, hashtable);
     const char* correct_word = "Justice";
     const char* punctuation_word_2 = "pl.ace";
@@ -33,8 +33,8 @@ END_TEST
 
 START_TEST(test_check_words_normal)
 {   
-    memset(myarray, 0, sizeof(hashtable));
-    memset(myarray, 0, sizeof(misspelled));
+    memset(hashtable, 0, sizeof(hashtable));
+    memset(misspelled, 0, sizeof(misspelled));
     load_dictionary(DICTIONARY, hashtable);
     char* expected[3];
     expected[0] = "sogn";
