@@ -11,6 +11,7 @@
 // Maps a word to an integer value to place it in the hash table.
 // Sum the value of each character in the word, then find the 
 // remainder after dividing by the size of the hash table.
+
 int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 {	
     fflush(stdout);
@@ -228,7 +229,11 @@ bool check_word(const char* word, hashmap_t hashtable[])
 bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 {
     //inserting into hashmap_t
+
     fprintf(stdout,"DEBUG: ENTER load_dictionary()\n");
+    for (int i = 0; i < HASH_SIZE; i++) {
+        hashtable[i] = NULL;
+    }
     int bucket=-1;
     int count=0;
     FILE *fp = fopen(dictionary_file, "r");

@@ -4,15 +4,17 @@
 
 #include <ctype.h>
 #include "dictionary.h"
-node* hashtable[HASH_SIZE];
-char* misspelled[MAX_MISSPELLED];
+
+//global variable declaration to reduce heap memory space
 
 
 int main(int argc, char *argv[] )
 {	
-	
+	node* hashtable[HASH_SIZE];
+	char* misspelled[MAX_MISSPELLED];
 	bool status=false;
 	int misspell_count=0;
+	
 	if (argc!=3)
 	{
 		fprintf(stdout,"Usage incorrect!\n");
