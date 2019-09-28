@@ -253,7 +253,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
          //fputs(chunk, stdout);
 
         
-        fprintf(stdout,"word1 %s %d \n",word1,word1[strlen(word1)-1]);
+        //fprintf(stdout,"word1 %s %d \n",word1,word1[strlen(word1)-1]);
         
 
    		char* newword =0;
@@ -313,7 +313,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         		fprintf(stdout,"WARN: Could not add word from dictionary due to size violation");
         		fprintf(stdout,"Skipping ......");
         	}
-        	fprintf(stdout,"DEBUG: word %s placed in bucket:%d at head: word_count=%d\n",hashtable[bucket]->word,bucket,count);
+        	//fprintf(stdout,"DEBUG: word %s placed in bucket:%d at head: word_count=%d\n",hashtable[bucket]->word,bucket,count);
         }
         else
         {
@@ -341,7 +341,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 
         	//if(bucket==966)
         	//{
-        	fprintf(stdout,"DEBUG: word %s placed in bucket:%d at pos %d: word_count=%d\n",newword,bucket,pos+1,count);
+        	//fprintf(stdout,"DEBUG: word %s placed in bucket:%d at pos %d: word_count=%d\n",newword,bucket,pos+1,count);
         	//fprintf(stdout,"\n>>>>>\n");
         	
         	
