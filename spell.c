@@ -12,7 +12,8 @@
 // Sum the value of each character in the word, then find the 
 // remainder after dividing by the size of the hash table.
 int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
-{	fflush(stdout);
+{	
+    fflush(stdout);
 	fprintf(stdout,"DEBUG:Enter check_words_spaces\n");
 	char word[47];
 	char c;
@@ -69,7 +70,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
     			index=0;
     			misspelled[count]=malloc(strlen(word)+1);
 				snprintf(misspelled[count],strlen(word)+1,word);
-    			fprintf(stdout,"INFO: Mispelled-Case-2: |%s|, truncated and added to mispelled \n",misspelled[count]);
+    			//fprintf(stdout,"INFO: Mispelled-Case-2: |%s|, truncated and added to mispelled \n",misspelled[count]);
     			count+=1;
     			
     		}
@@ -93,9 +94,9 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
                 if(word[last]==' ' || word[last]=='\n' || word[last]=='\t' || word[last]==EOF)
                 {
                     //trim the word
-                    fprintf(stdout,"TRACE: Trim required\n");
+                    //fprintf(stdout,"TRACE: Trim required\n");
                     word[last]='\0';
-                    fprintf(stdout,"TRACE: Trim done ||%s||\n",word);
+                    //fprintf(stdout,"TRACE: Trim done ||%s||\n",word);
                 }
 
             }
@@ -112,7 +113,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 
     				misspelled[count]=malloc(strlen(word)+1);
 					snprintf(misspelled[count],strlen(word)+1,word);
-    				fprintf(stdout,"INFO: Mispelled-Case-3: |%s| Added to mispelled \n",misspelled[count]);
+    				//fprintf(stdout,"INFO: Mispelled-Case-3: |%s| Added to mispelled \n",misspelled[count]);
     				count+=1;
     		}
 	}
@@ -227,7 +228,7 @@ bool check_word(const char* word, hashmap_t hashtable[])
 bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 {
     //inserting into hashmap_t
-   	fprintf(stdout,"DEBUG: ENTER load_dictionary()\n");
+    fprintf(stdout,"DEBUG: ENTER load_dictionary()\n");
     int bucket=-1;
     int count=0;
     FILE *fp = fopen(dictionary_file, "r");
@@ -283,7 +284,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         		fprintf(stdout,"WARN: Could not add word from dicitonary due to size violation");
         		fprintf(stdout,"Skipping ......");
         	}
-        	//fprintf(stdout,"DEBUG: word %s placed in bucket:%d at head: word_count=%ld\n",hashtable[bucket]->word,bucket,count);
+        	//fprintf(stdout,"DEBUG: word %s placed in bucket:%d at head: word_count=%d\n",hashtable[bucket]->word,bucket,count);
         }
         else
         {
@@ -311,7 +312,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 
         	//if(bucket==966)
         	//{
-        	//fprintf(stdout,"DEBUG: word %s placed in bucket:%d at pos %d: word_count=%ld\n",newword,bucket,pos+1,count);
+        	//fprintf(stdout,"DEBUG: word %s placed in bucket:%d at pos %d: word_count=%d\n",newword,bucket,pos+1,count);
         	//fprintf(stdout,"\n>>>>>\n");
         	
         	

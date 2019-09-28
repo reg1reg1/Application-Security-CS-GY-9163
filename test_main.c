@@ -4,10 +4,13 @@
 
 #define DICTIONARY "wordlist.txt"
 #define TESTDICT "test_wordlist.txt"
+node* hashtable[HASH_SIZE];
+char* misspelled[MAX_MISSPELLED];
 
 START_TEST(test_dictionary_normal)
-{
-    hashmap_t hashtable[HASH_SIZE];
+{   
+    hashtable[HASH_SIZE]={0};
+    misspelled[MAX_MISSPELLED]={0};
     ck_assert(load_dictionary(TESTDICT, hashtable));
     // Here we can test if certain words ended up in certain buckets
     // to ensure that our load_dictionary works as intended. I leave
@@ -16,8 +19,9 @@ START_TEST(test_dictionary_normal)
 END_TEST
 
 START_TEST(test_check_word_normal)
-{
-    hashmap_t hashtable[HASH_SIZE];
+{   
+    hashtable[HASH_SIZE]={0};
+    misspelled[MAX_MISSPELLED]={0};
     load_dictionary(DICTIONARY, hashtable);
     const char* correct_word = "Justice";
     const char* punctuation_word_2 = "pl.ace";
@@ -28,8 +32,9 @@ START_TEST(test_check_word_normal)
 END_TEST
 
 START_TEST(test_check_words_normal)
-{
-    hashmap_t hashtable[HASH_SIZE];
+{   
+    hashtable[HASH_SIZE]={0};
+    misspelled[MAX_MISSPELLED]={0};
     load_dictionary(DICTIONARY, hashtable);
     char* expected[3];
     expected[0] = "sogn";

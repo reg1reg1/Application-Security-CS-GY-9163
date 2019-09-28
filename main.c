@@ -5,7 +5,7 @@
 #include <ctype.h>
 #include "dictionary.h"
 node* hashtable[HASH_SIZE];
-char* misspelled[1005];
+char* misspelled[MAX_MISSPELLED];
 
 
 int main(int argc, char *argv[] )

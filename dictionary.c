@@ -15,6 +15,8 @@
 
 // Hash table is an array of linked lists.
 
+
+
 int hash_function(const char* word)
 {
     int sum = 0;
