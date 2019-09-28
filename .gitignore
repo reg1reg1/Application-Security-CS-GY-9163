@@ -1,2 +1,4 @@
-spell.exe
+*.exe
+spell
 *.o
+*.h.*

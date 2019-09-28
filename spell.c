@@ -24,7 +24,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 	int count=0;
 	do {
   		c = (char)fgetc(fp);
-  		if(c == ' ' || c == '\n' || c == '\0' || c == '\t') {
+  		if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c=='.' || c==',' || c==';') {
     		//wordfunction(word)
     		fprintf(stdout,"DEBUG: IF Entered\n");
     		fprintf(stdout,"INFO: Checking word->***%s***%d\n",word,strlen(word));
@@ -40,7 +40,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 
     				misspelled[count]=malloc(strlen(word)+1);
 					snprintf(misspelled[count],strlen(word)+1,word);
-    				fprintf(stdout,"INFO: Mispelled: |%s| Added to mispelled \n",misspelled[count]);
+    				fprintf(stdout,"INFO: Mispelled-Case-1: |%s| Added to mispelled \n",misspelled[count]);
     				count+=1;
     		}
     		word[0] = 0; //Reset word
@@ -56,7 +56,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
     				c = (char)fgetc(fp);
     				
     				//fprintf(stdout,"Ignoring |%c|",c);
-    			if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c==EOF)
+    			if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c=='.' || c==',' || c==';' || c==EOF)
     			{
     				break;
     			}	
@@ -69,7 +69,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
     			index=0;
     			misspelled[count]=malloc(strlen(word)+1);
 				snprintf(misspelled[count],strlen(word)+1,word);
-    			fprintf(stdout,"Mispelled: |%s|, truncated and added to mispelled \n",misspelled[count]);
+    			fprintf(stdout,"INFO: Mispelled-Case-2: |%s|, truncated and added to mispelled \n",misspelled[count]);
     			count+=1;
     			
     		}
@@ -82,10 +82,26 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
   		}	
   	
 	} while(c != EOF);
+
+    //last word of the file, may have trailing spaces or newline which must be manually removed
 	if(word!=NULL)
-	{
+	{          
+            //for that edge case where last word is not a stream of carriages.
+            
+            if(!newLineOrSpaces(word))
+            {   int last= strlen(word)-1;
+                if(word[last]==' ' || word[last]=='\n' || word[last]=='\t' || word[last]==EOF)
+                {
+                    //trim the word
+                    fprintf(stdout,"TRACE: Trim required\n");
+                    word[last]='\0';
+                    fprintf(stdout,"TRACE: Trim done ||%s||\n",word);
+                }
+
+            }
 			const char* w2 = word;
     		//consider the word spelling
+            fprintf(stdout,"TRACE: Last word of the file ||%s||\n",word);
     		if(check_word(w2,hashtable))
     		{
     			fprintf(stdout,"INFO: Correct spelling <%s>\n",word);
@@ -96,7 +112,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 
     				misspelled[count]=malloc(strlen(word)+1);
 					snprintf(misspelled[count],strlen(word)+1,word);
-    				fprintf(stdout,"Mispelled: |%s| Added to mispelled \n",misspelled[count]);
+    				fprintf(stdout,"INFO: Mispelled-Case-3: |%s| Added to mispelled \n",misspelled[count]);
     				count+=1;
     		}
 	}
@@ -115,7 +131,7 @@ bool newLineOrSpaces(const char* word)
 		int i=0;
 		while(i<length)
 		{
-			if(!(word[i]=='\t' || word[i]==' ' || word[i]=='\n' || word[i]=='\r' || word[i]==EOF))
+			if(!(word[i]=='\t' || word[i]==' ' || word[i]=='\n' || word[i]=='\r' || word[i]=='.' || word[i]==',' || word[i]==';'|| word[i]==EOF))
 			{
 				condition=false;
 				break;
