@@ -4,13 +4,13 @@
 
 #define DICTIONARY "wordlist.txt"
 #define TESTDICT "test_wordlist.txt"
-node* hashtable[HASH_SIZE];
-char* misspelled[MAX_MISSPELLED];
+#define TESTDICT2 "test_dictionary.txt"
+
 
 START_TEST(test_dictionary_normal)
 {   
-    memset(hashtable, 0, sizeof(hashtable));
-    memset(misspelled, 0, sizeof(misspelled));
+    node* hashtable[HASH_SIZE];
+    char* misspelled[MAX_MISSPELLED];
     ck_assert(load_dictionary(TESTDICT, hashtable));
     // Here we can test if certain words ended up in certain buckets
     // to ensure that our load_dictionary works as intended. I leave
@@ -20,16 +20,38 @@ END_TEST
 
 START_TEST(test_check_word_normal)
 {   
-    memset(hashtable, 0, sizeof(hashtable));
-    memset(misspelled, 0, sizeof(misspelled));
+    node* hashtable[HASH_SIZE];
+    char* misspelled[MAX_MISSPELLED];
     load_dictionary(DICTIONARY, hashtable);
     const char* correct_word = "Justice";
     const char* punctuation_word_2 = "pl.ace";
+    const char* numerics = "12345678"
+    const char* punctuation ="Where?"
+    const char* punctuation_only = ";!?.,"
     ck_assert(check_word(correct_word, hashtable));
     ck_assert(!check_word(punctuation_word_2, hashtable));
-    // Test here: What if a word begins and ends with "?
+    ck_assert(check_word(numerics, hashtable));
+    ck_assert(check_word(punctuation, hashtable));
+    ck_assert(check_word(punctuation_only, hashtable))
 }
 END_TEST
+
+//checking case sensitiveness
+START_TEST(test_check_word_case)
+{   
+    node* hashtable[HASH_SIZE];
+    char* misspelled[MAX_MISSPELLED];
+    load_dictionary(DICTIONARY, hashtable);
+    const char* correct_word = "IEEE";
+    const char* lcase = "ieee";
+    ck_assert(check_word(correct_word, hashtable));
+    ck_assert(check_word(lcase, hashtable))
+}
+END_TEST
+
+
+
+
 
 START_TEST(test_check_words_normal)
 {   
@@ -53,6 +75,41 @@ START_TEST(test_check_words_normal)
     ck_assert_msg(strcmp(misspelled[2], expected[2]) == 0);
 }
 END_TEST
+
+/**
+    This test case is for checking length and edge cases
+    A word of length> 45 is stored as follows
+    word is given a length of 45 chars and appended by character
+    caused truncation and appended by ~. Hence
+    [45 A's][GGG] will be shown as [45 A's][G][~]
+    This test file also checks that spaces and newlines are not treated
+    as mispelled words
+**/
+START_TEST(test_check_words_huge)
+{   
+    memset(hashtable, 0, sizeof(hashtable));
+    memset(misspelled, 0, sizeof(misspelled));
+    load_dictionary(DICTIONARY, hashtable);
+    char* expected[3];
+    expected[0] = "oons";
+    expected[1] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG~";
+    expected[2] = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBCC~";
+    char *misspelled[MAX_MISSPELLED];
+    FILE *fp = fopen("test_wordlist_2.txt", "r");
+    int num_misspelled = check_words(fp, hashtable, misspelled);
+    ck_assert(num_misspelled == 3);
+    bool test = strlen(misspelled[0]) == strlen(expected[0]);
+    int len1 = strlen(misspelled[0]);
+    int len2 = strlen(expected[0]);
+    ck_assert_msg(test, "%d!=%d", len1, len2);
+    ck_assert_msg(strcmp(misspelled[0], expected[0]) == 0);
+    ck_assert_msg(strcmp(misspelled[1], expected[1]) == 0);
+    ck_assert_msg(strcmp(misspelled[2], expected[2]) == 0);
+}
+END_TEST
+
+
+
 
 Suite *
 check_word_suite(void)

@@ -26,7 +26,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 	int count=0;
 	do {
   		c = (char)fgetc(fp);
-  		if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c=='.' || c==',' || c==';') {
+  		if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c=='.' || c==',' || c==';' || c=='?' || c=='!' || c==':') {
     		//wordfunction(word)
     		fprintf(stdout,"DEBUG: IF Entered\n");
     		fprintf(stdout,"INFO: Checking word->***%s***%d\n",word,strlen(word));
@@ -46,7 +46,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
     				count+=1;
     		}
     		word[0] = 0; //Reset word
-    		index = 0;
+    		index = 0; //end the word here (0 is the ascii value for null)
   		} 
   		else 
   		{	//fprintf(stdout,"\n DEBUG: ELSE Entered %d \n",index);
@@ -57,8 +57,8 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
     			while(true){
     				c = (char)fgetc(fp);
     				
-    				//fprintf(stdout,"Ignoring |%c|",c);
-    			if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c=='.' || c==',' || c==';' || c==EOF)
+    			// Could put this inside a function, but this a lazy way to do the same.
+    			if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c=='.' || c==',' || c==';' || c=='?' || c=='!' || c==':' || c==EOF)
     			{
     				break;
     			}	
@@ -71,8 +71,10 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
     			index=0;
     			misspelled[count]=malloc(strlen(word)+1);
 				snprintf(misspelled[count],strlen(word)+1,word);
+                fprintf(stdout,"INFO: Mispelled-Case-2: |%s| Added to mispelled \n",misspelled[count]);
     			//fprintf(stdout,"INFO: Mispelled-Case-2: |%s|, truncated and added to mispelled \n",misspelled[count]);
-    			count+=1;
+    			word[0] = 0;
+                count+=1;
     			
     		}
     		else
@@ -103,7 +105,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
             }
 			const char* w2 = word;
     		//consider the word spelling
-            fprintf(stdout,"TRACE: Last word of the file ||%s||\n",word);
+            //fprintf(stdout,"TRACE: Last word of the file ||%s||\n",word);
     		if(check_word(w2,hashtable))
     		{
     			fprintf(stdout,"INFO: Correct spelling <%s>\n",word);
@@ -114,7 +116,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 
     				misspelled[count]=malloc(strlen(word)+1);
 					snprintf(misspelled[count],strlen(word)+1,word);
-    				//fprintf(stdout,"INFO: Mispelled-Case-3: |%s| Added to mispelled \n",misspelled[count]);
+    				fprintf(stdout,"INFO: Mispelled-Case-3: |%s| Added to mispelled \n",misspelled[count]);
     				count+=1;
     		}
 	}
@@ -124,7 +126,8 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 	return count;
 	
 }
-
+//effectively ignores a stream of punctuation marks. Punctuation marks are treated as delimiters
+// car.cat are 2 words
 bool newLineOrSpaces(const char* word)
 	{	
 		fprintf(stdout,"DEBUG: Enter newLineOrSpaces\n");
@@ -133,7 +136,7 @@ bool newLineOrSpaces(const char* word)
 		int i=0;
 		while(i<length)
 		{
-			if(!(word[i]=='\t' || word[i]==' ' || word[i]=='\n' || word[i]=='\r' || word[i]=='.' || word[i]==',' || word[i]==';'|| word[i]==EOF))
+			if(!(word[i]=='\t' || word[i]==' ' || word[i]=='\n' || word[i]=='\r' || word[i]=='.' || word[i]==',' || word[i]==';'|| word[i]=='?' || word[i]=='!' || word[i]==':' || word[i]==EOF))
 			{
 				condition=false;
 				break;
@@ -143,6 +146,7 @@ bool newLineOrSpaces(const char* word)
 		fprintf(stdout,"DEBUG:Exit newLineOrSpaces condition %s\n",condition ? "true" : "false");
 		return condition;
 	}
+
 bool isNumber(const char* word)
 {	
 	fprintf(stdout,"DEBUG: Enter isNumber\n");
@@ -243,27 +247,47 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
           
      }
  
-     char word1[46];
+     char word1[47];
  
      while(fgets(word1, sizeof(word1), fp) != NULL) {
          //fputs(chunk, stdout);
 
-        //fprintf(stdout,">>%s<<\n",word1);
-
+        
+        fprintf(stdout,"word1 %s %d \n",word1,word1[strlen(word1)-1]);
         
 
    		char* newword =0;
-        newword = (char*)malloc(strlen(word1));
-		memcpy(newword,word1,strlen(word1)-1);
-		newword[strlen(word1)-1] = 0;
-		int i=0;
-		for(i=0;i<strlen(newword);i++)
-		{
-			if(isalpha(newword[i]))
-			{
-			newword[i]=tolower(newword[i]);
-			}
-		}
+        if(word1[strlen(word1)-1]==10)
+        {
+             newword = (char*)malloc(strlen(word1));
+            memcpy(newword,word1,strlen(word1)-1);
+            newword[strlen(word1)-1] = 0;
+            int i=0;
+            for(i=0;i<strlen(newword);i++)
+             {
+                if(isalpha(newword[i]))
+                {
+                    newword[i]=tolower(newword[i]);
+                }
+            }
+           
+        }
+        else
+        {
+              newword = (char*)malloc(strlen(word1)+1);
+            memcpy(newword,word1,strlen(word1));
+            newword[strlen(word1)] = 0;
+            int i=0;
+            for(i=0;i<strlen(newword);i++)
+             {
+                if(isalpha(newword[i]))
+                {
+                    newword[i]=tolower(newword[i]);
+                }
+            }
+            
+        }        
+       
 		//const char* lower = convertToLower(newword,strlen(newword));
 
 		bucket = hash_function(newword);
@@ -277,7 +301,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         	//fprintf(stdout,"Head attained\n");
         	
         	
-        	if(strlen(newword)<LENGTH)
+        	if(strlen(newword)<=LENGTH)
         	{	
         		//change strcpy
             	snprintf(hashtable[bucket]->word,sizeof(hashtable[bucket]->word),newword);
@@ -286,10 +310,10 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         	}
         	else
         	{
-        		fprintf(stdout,"WARN: Could not add word from dicitonary due to size violation");
+        		fprintf(stdout,"WARN: Could not add word from dictionary due to size violation");
         		fprintf(stdout,"Skipping ......");
         	}
-        	//fprintf(stdout,"DEBUG: word %s placed in bucket:%d at head: word_count=%d\n",hashtable[bucket]->word,bucket,count);
+        	fprintf(stdout,"DEBUG: word %s placed in bucket:%d at head: word_count=%d\n",hashtable[bucket]->word,bucket,count);
         }
         else
         {
@@ -317,7 +341,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 
         	//if(bucket==966)
         	//{
-        	//fprintf(stdout,"DEBUG: word %s placed in bucket:%d at pos %d: word_count=%d\n",newword,bucket,pos+1,count);
+        	fprintf(stdout,"DEBUG: word %s placed in bucket:%d at pos %d: word_count=%d\n",newword,bucket,pos+1,count);
         	//fprintf(stdout,"\n>>>>>\n");
         	
         	
@@ -328,7 +352,6 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         count++;
          //fputs("|*\n", stdout);  // marker string used to show where the content of the chunk array has ended
      }
- 	
      fclose(fp);
      fprintf(stdout,"DEBUG: EXIT load_dictionary()\n");
      return true;
