@@ -15,6 +15,7 @@ int main(int argc, char *argv[] )
 	bool status=false;
 	int misspell_count=0;
 	
+	//Usage print
 	if (argc!=3)
 	{
 		fprintf(stdout,"Usage incorrect!\n");
@@ -25,8 +26,9 @@ int main(int argc, char *argv[] )
 	{	
 		const char *dictionary = argv[2];
 		const char *inputText = argv[1];
+		
 		fprintf(stdout,"%s %s\n",dictionary,inputText);
-		status=load_dictionary(dictionary,hashtable);
+		status=load_dictionary_2(dictionary,hashtable);
 		if(!status)
 		{
 			fprintf(stdout,"Could not load dictionary file,...\n Aborting ...\n");
@@ -49,6 +51,8 @@ int main(int argc, char *argv[] )
      	{
      		fprintf(stdout,"All words are spelled correctly!\n");
      	}
+     	
+     	
 
 	}
 	exit(0);

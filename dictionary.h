@@ -36,6 +36,7 @@ bool newLineOrSpaces(const char* word);
 bool isNumber(const char* word);
 void print_bucket(int bucket,hashmap_t x[]);
 void print_mispelled(char * mispelled[],int count);
+bool load_dictionary_2(const char* dictionary_file, hashmap_t hashtable[]);
 /**
  * Array misspelled is populated with words that are misspelled. Returns the length of misspelled.
  */
