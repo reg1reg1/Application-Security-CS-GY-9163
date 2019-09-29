@@ -518,7 +518,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         return true;
 }
 
-
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%print_bucket%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 //check function to print all words in a bucket (same hashfunction value)
 void print_bucket(int bucket,hashmap_t x[])
@@ -544,6 +544,7 @@ void print_bucket(int bucket,hashmap_t x[])
         return ;
 }
 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%print_mispelled%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 void print_mispelled(char * mispelled[],int count)
 {	
 	fprintf(stdout,"DEBUG:spell.c:ENTER printf_mispelled()\n");
