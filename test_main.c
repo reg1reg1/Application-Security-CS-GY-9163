@@ -135,7 +135,7 @@ START_TEST(test_check_words_edge)
     char* misspelled[MAX_MISSPELLED];
     load_dictionary(TESTDICT2, hashtable);
     char* expected[3];
-    expected[0] = "ieeefgj";
+    expected[0] = "ieefgj";
     expected[1] = "hujp";
     expected[2] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA~";
     FILE *fp = fopen(INPUT4, "r");
