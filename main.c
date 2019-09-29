@@ -38,6 +38,7 @@ int main(int argc, char *argv[] )
           exit(1);
      	}
      	misspell_count= check_words(fp,hashtable,misspelled);
+     	//fclose(fp);
      	if(misspell_count>0)
      	{	 fprintf(stdout,"\n\n\n\n**************%d Mispelled words***************\n",misspell_count);
 
@@ -50,7 +51,7 @@ int main(int argc, char *argv[] )
      	}
 
 	}
-	return 0;
+	exit(0);
 }
 
 /** Commands to execute

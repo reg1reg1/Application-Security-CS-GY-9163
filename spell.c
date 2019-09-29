@@ -24,7 +24,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
   		if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c=='.' || c==',' || c==';' || c=='?' || c=='!' || c==':') {
     		//wordfunction(word)
     		fprintf(stdout,"DEBUG: IF Entered\n");
-    		fprintf(stdout,"INFO: Checking word->***%s***%d\n",word,strlen(word));
+    		fprintf(stdout,"INFO: Checking word->***%s***\n",word);
     		const char* w1 = word;
     		//consider the word spelling
     		if(check_word(w1,hashtable))
