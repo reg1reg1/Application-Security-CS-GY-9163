@@ -47,9 +47,19 @@ START_TEST(test_check_word_case)
 END_TEST
 
 
+//Writing test cases for helper functions with non-void return types
+START_TEST(test_check_helper_functions)
+{
+    const char* number = "12345";
+    const char* carriages = "   .,;;;.";
+    ck_assert(isNumber(number));
+    ck_assert(newLineOrSpaces(carriages));
 
+}END_TEST
 
-
+/**
+Basic test case where the mispelled bucket functionality is tested
+**/
 START_TEST(test_check_words_normal)
 {   
     node* hashtable[HASH_SIZE];
@@ -80,6 +90,7 @@ END_TEST
     [45 A's][GGG] will be shown as [45 A's][G][~]
     This test file also checks that spaces and newlines are not treated
     as mispelled words
+    This test case of file also contains the longest word pneumonoultramicroscopicsilicovolcanoconiosis
 **/
 START_TEST(test_check_words_huge)
 {   
@@ -117,6 +128,7 @@ check_word_suite(void)
     tcase_add_test(check_word_case, test_check_words_normal);
     tcase_add_test(check_word_case, test_check_words_huge);
     tcase_add_test(check_word_case, test_check_word_case);
+    tcase_add_test(check_word_case, test_check_helper_functions);
     suite_add_tcase(suite, check_word_case);
 
     return suite;
