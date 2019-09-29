@@ -23,16 +23,16 @@ int main(int argc, char *argv[] )
 	}
 	else
 	{	
-		const char *dictionary = argv[1];
-		const char *wordlist = argv[2];
-		fprintf(stdout,"%s %s\n",dictionary,wordlist);
+		const char *dictionary = argv[2];
+		const char *inputText = argv[1];
+		fprintf(stdout,"%s %s\n",dictionary,inputText);
 		status=load_dictionary(dictionary,hashtable);
 		if(!status)
 		{
 			fprintf(stdout,"Could not load dictionary file,...\n Aborting ...\n");
 			return 0;
 		}
-		FILE *fp = fopen(wordlist,"r");
+		FILE *fp = fopen(inputText,"r");
 		if(fp == NULL) {
          perror("Unable to open file!");
           exit(1);

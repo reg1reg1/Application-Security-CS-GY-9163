@@ -85,7 +85,7 @@ START_TEST(test_check_words_huge)
 {   
     node* hashtable[HASH_SIZE];
     char* misspelled[MAX_MISSPELLED];
-    load_dictionary(DICTIONARY, hashtable);
+    load_dictionary(TESTDICT2, hashtable);
     char* expected[3];
     expected[0] = "oons";
     expected[1] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG~";
