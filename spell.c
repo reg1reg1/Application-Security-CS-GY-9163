@@ -252,8 +252,9 @@ This function assumes dictionary is a wordlist with newline separated words
 It does not split words on the basis of other delimiters such as space and full stop.
 
 **/
-bool load_dictionary_2(const char* dictionary_file, hashmap_t hashtable[])
-{
+bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
+{   
+    fprintf(stdout,"DEBUG:ENTER load_dictionary()\n");
     for (int i = 0; i < HASH_SIZE; i++) {
         hashtable[i] = NULL;
     }
@@ -415,139 +416,12 @@ bool load_dictionary_2(const char* dictionary_file, hashmap_t hashtable[])
      
             } 
         }while(c != EOF);
+        fclose(fp);
+        fprintf(stdout,"DEBUG:ENTER load_dictionary()\n");
         return true;
 }
 
-bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
-{
-    //inserting into hashmap_t
 
-    fprintf(stdout,"DEBUG: ENTER load_dictionary()\n");
-    for (int i = 0; i < HASH_SIZE; i++) {
-        hashtable[i] = NULL;
-    }
-    int bucket=-1;
-    int count=0;
-    FILE *fp = fopen(dictionary_file, "r");
- 	if(fp == NULL) {
-         perror("Unable to open file!");
-         return false;
-          
-     }
- 
-     char word1[47];
- 
-     while(fgets(word1, sizeof(word1), fp) != NULL) {
-        
-            
-        /**
-        This part of code is to avoid the case where the last line of the 
-        dictionary file is read. If the dictionary does not end in a new line the last 
-        word ends up being ignored. Hence this piece of code checks for this case and also
-        converts the word to lowercase before adding it to the dictionary.
-        **/
-   		char* newword =0;
-        if(word1[strlen(word1)-1]==10)
-        {
-             newword = (char*)malloc(strlen(word1));
-            memcpy(newword,word1,strlen(word1)-1);
-            newword[strlen(word1)-1] = 0;
-            int i=0;
-            for(i=0;i<strlen(newword);i++)
-             {
-                if(isalpha(newword[i]))
-                {
-                    newword[i]=tolower(newword[i]);
-                }
-            }
-           
-        }
-        else
-        {
-            
-            newword = (char*)malloc(strlen(word1)+1);
-            memcpy(newword,word1,strlen(word1));
-            newword[strlen(word1)] = 0;
-            int i=0;
-            for(i=0;i<strlen(newword);i++)
-             {
-                if(isalpha(newword[i]))
-                {
-                    newword[i]=tolower(newword[i]);
-                }
-            }
-            
-        }        
-       
-		//const char* lower = convertToLower(newword,strlen(newword));
-
-		bucket = hash_function(newword);
-        hashmap_t head = hashtable[bucket];
-
-        if(head==NULL)
-        {
-        	//head is empty
-        	hashtable[bucket] = (node *) malloc(sizeof(node));
-        	hashtable[bucket]->next = NULL;
-        	//fprintf(stdout,"Head attained\n");
-        	
-        	
-        	if(strlen(newword)<=LENGTH)
-        	{	
-        		//change strcpy
-            	snprintf(hashtable[bucket]->word,sizeof(hashtable[bucket]->word),newword);
-            	free(newword);
-            	
-        	}
-        	else
-        	{
-        		fprintf(stdout,"WARN: Could not add word from dictionary due to size violation");
-        		fprintf(stdout,"Skipping ......");
-        	}
-        	//fprintf(stdout,"DEBUG: word %s placed in bucket:%d at head: word_count=%d\n",hashtable[bucket]->word,bucket,count);
-        }
-        else
-        {
-        	 hashmap_t temp=head;
-
-        	//fprintf(stdout,"bucket attained %d\n",bucket);
-
-        	int pos=0;
-        	while(temp->next!=NULL)
-        	{   pos=pos+1;
-        		//fprintf(stdout,"%s\n",word1);
-           	 	//fprintf(stdout,"Inserted word %s at bucket %d, %d POS\n",word1,bucket,pos);
-        		//fprintf(stdout,"Possible infinite loop\n");
-            	temp=temp->next;
-            
-        	}
-        	hashmap_t newnode = (node *) malloc(sizeof(node));
-        	if(strlen(word1)<=LENGTH)
-        	{
-            	snprintf(newnode->word,sizeof(newnode->word),newword);
-            	free(newword);
-        	}
-        	newnode->next=0;
-        	temp->next = newnode;
-
-        	//if(bucket==966)
-        	//{
-        	//fprintf(stdout,"DEBUG: word %s placed in bucket:%d at pos %d: word_count=%d\n",newword,bucket,pos+1,count);
-        	//fprintf(stdout,"\n>>>>>\n");
-        	
-        	
-
-        }
-        //fprintf(stdout,"DEBUG:3");
-
-        count++;
-         //fputs("|*\n", stdout);  // marker string used to show where the content of the chunk array has ended
-     }
-     fclose(fp);
-     fprintf(stdout,"DEBUG: EXIT load_dictionary()\n");
-     return true;
- 	
-}
 
 //check function to print all words in a bucket (same hashfunction value)
 void print_bucket(int bucket,hashmap_t x[])
