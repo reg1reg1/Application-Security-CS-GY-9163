@@ -12,7 +12,7 @@
 START_TEST(test_dictionary_normal)
 {   
     node* hashtable[HASH_SIZE];
-    ck_assert(load_dictionary(TESTDICT, hashtable));
+    ck_assert(load_dictionary(TESTDICT1, hashtable));
     // Here we can test if certain words ended up in certain buckets
     // to ensure that our load_dictionary works as intended. I leave
     // this as an exercise.
@@ -22,7 +22,7 @@ END_TEST
 START_TEST(test_check_word_normal)
 {   
     node* hashtable[HASH_SIZE];
-    load_dictionary(DICTIONARY, hashtable);
+    load_dictionary(DICTIONARY_MAIN, hashtable);
     const char* correct_word = "Justice";
     const char* punctuation_word_2 = "pl.ace";
     const char* numerics = "12345678";
@@ -40,7 +40,7 @@ END_TEST
 START_TEST(test_check_word_case)
 {   
     node* hashtable[HASH_SIZE];
-    load_dictionary(DICTIONARY, hashtable);
+    load_dictionary(DICTIONARY_MAIN, hashtable);
     const char* correct_word = "IEEE";
     const char* lcase = "ieee";
     ck_assert(check_word(correct_word, hashtable));
@@ -100,11 +100,12 @@ START_TEST(test_check_words_huge)
     node* hashtable[HASH_SIZE];
     char* misspelled[MAX_MISSPELLED];
     load_dictionary(TESTDICT1, hashtable);
-    char* expected[4];
+    char* expected[5];
     expected[0] = "oons";
     expected[1] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG~";
     expected[2] = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBCC~";
-    expected[3] = "CARTCARTCARTCARTCARTCARTCARTCARTCARTCARTCARTCA"
+    expected[3] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    expected[5] = "FFFF";
     FILE *fp = fopen(INPUT2, "r");
     int num_misspelled = check_words(fp, hashtable, misspelled);
     ck_assert(num_misspelled == 3);
@@ -115,6 +116,8 @@ START_TEST(test_check_words_huge)
     ck_assert_msg(strcmp(misspelled[0], expected[0]) == 0);
     ck_assert_msg(strcmp(misspelled[1], expected[1]) == 0);
     ck_assert_msg(strcmp(misspelled[2], expected[2]) == 0);
+    ck_assert_msg(strcmp(misspelled[3], expected[3]) == 0);
+    ck_assert_msg(strcmp(misspelled[4], expected[4]) == 0);
 }
 END_TEST
 
