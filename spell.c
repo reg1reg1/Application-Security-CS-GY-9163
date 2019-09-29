@@ -6,7 +6,7 @@
 #include "dictionary.h"
 
 
-
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%CHECK_WORDS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 {	
     fflush(stdout);
@@ -139,6 +139,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 	return count;
 	
 }
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%newLineOrSpaces%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 /**
     effectively ignores a stream of punctuation marks. Punctuation marks are treated as delimiters
 **/
@@ -160,6 +161,8 @@ bool newLineOrSpaces(const char* word)
 		//fprintf(stdout,"DEBUG:Exit newLineOrSpaces condition %s\n",condition ? "true" : "false");
 		return condition;
 	}
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%isNumber%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
 /**
 Checks whether a string is constructed only based on numbers
 **/
@@ -182,6 +185,7 @@ bool isNumber(const char* word)
 	return condition;
 }
 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%CHECK_WORD%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 /**
 
@@ -247,6 +251,11 @@ bool check_word(const char* word, hashmap_t hashtable[])
 	return found;
 }
 
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%LOAD_DICTIONARY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 /**
 This function assumes dictionary is a wordlist with newline separated words
 It does not split words on the basis of other delimiters such as space and full stop.
@@ -273,11 +282,12 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         c = (char)fgetc(fp);
         if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c=='.' || c==',' || c==';' || c=='?' || c=='!' || c==':') {
             //wordfunction(word)
-            //fprintf(stdout,"DEBUG: IF Entered\n");
+            //fprintf(stdout,"DEBUG: Loading %s \n",word1);
             
             if(newLineOrSpaces(word1) || isNumber(word1))
             {
                 //fprintf(stdout,"TRACE:Not a word, so not adding to dictionary |%s|\n",word1);
+                //do not do anything, ignore the word
             }
             else
             {   
@@ -330,11 +340,11 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
                     free(newword);
                 
                 }
-            else
-            {
-                fprintf(stdout,"WARN: Could not add word from dictionary due to size violation");
-                fprintf(stdout,"Skipping ......");
-            }
+                else
+                {
+                    fprintf(stdout,"WARN: Could not add word from dictionary due to size violation");
+                    fprintf(stdout,"Skipping ......");
+                }
             //fprintf(stdout,"DEBUG: word |%s| placed in bucket:%d at head: word_count=%d\n",hashtable[bucket]->word,bucket,count);
             }
             else
@@ -347,11 +357,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
                 while(temp->next!=NULL)
                 {   
                     pos=pos+1;
-                //fprintf(stdout,"%s\n",word1);
-                //fprintf(stdout,"Inserted word %s at bucket %d, %d POS\n",word1,bucket,pos);
-                //fprintf(stdout,"Possible infinite loop\n");
-                temp=temp->next;
-            
+                    temp=temp->next;
                 }
                 hashmap_t newnode = (node *) malloc(sizeof(node));
                 if(strlen(word1)<=LENGTH)
@@ -361,14 +367,6 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
                 }
                 newnode->next=0;
                 temp->next = newnode;
-
-                //if(bucket==966)
-                //{
-                //fprintf(stdout,"DEBUG: word |%s| placed in bucket:%d at pos %d: word_count=%d\n",newword,bucket,pos+1,count);
-                //fprintf(stdout,"\n>>>>>\n");
-            
-            
-
             }   
         }
 
@@ -396,13 +394,11 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
                 
                 
                 word1[index]='\0';
-                fprintf(stdout,"Word is too long, ignoring it %s",word1);
+                fprintf(stdout,"Word is too long, ignoring it %s",word1); //word length size violation
                 index=0;
                 /**
                 Write if you want to add the truncated word to dictionary
                 **/
-
-                //fprintf(stdout,"INFO: Mispelled-Case-2: |%s|, truncated and added to mispelled \n",misspelled[count]);
                 word1[0] = 0;
                 count+=1;
                 
@@ -417,7 +413,108 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
             } 
         }while(c != EOF);
         fclose(fp);
-        fprintf(stdout,"DEBUG:ENTER load_dictionary()\n");
+        fprintf(stdout,"LAST word %s\n",word1);
+        if(word1!=NULL)
+        {   
+            //redoing the same thing which is done when a word is found in load_dictionary
+
+            fprintf(stdout,"DEBUG:Case:last_word OF dictionary ||%d||\n",strlen(word1));
+            if(newLineOrSpaces(word1) || isNumber(word1))
+            {
+                fprintf(stdout,"TRACE:LAST word was not added as it is not alphabetical |%s|\n",word1);
+                //do not do anything, ignore the word
+            }
+            else
+            {   
+                char* newword =0;
+                int last= strlen(word1)-1;
+                if(word1[last]==' ' || word1[last]=='\n' || word1[last]=='\t' || word1[last]==EOF)
+                {
+                    //trim the word
+                    //fprintf(stdout,"TRACE: Trim required\n");
+                    word1[last]='\0';
+                    //fprintf(stdout,"TRACE: Trim done ||%s||\n",word);
+                }
+                if(word1[strlen(word1)-1]==10)
+                {
+                    newword = (char*)malloc(strlen(word1));
+                    memcpy(newword,word1,strlen(word1)-1);
+                    newword[strlen(word1)-1] = 0;
+                    int i=0;
+                    for(i=0;i<strlen(newword);i++)
+                    {
+                        if(isalpha(newword[i]))
+                        {
+                        newword[i]=tolower(newword[i]);
+                        }
+                    }
+           
+                }
+                else
+                {
+                    newword = (char*)malloc(strlen(word1)+1);
+                    memcpy(newword,word1,strlen(word1));
+                    newword[strlen(word1)] = 0;
+                    int i=0;
+                    for(i=0;i<strlen(newword);i++)
+                    {
+                        if(isalpha(newword[i]))
+                        {
+                            newword[i]=tolower(newword[i]);
+                        }
+                    }
+            
+                }
+                bucket = hash_function(newword);
+                hashmap_t head = hashtable[bucket];
+
+            if(head==NULL)
+            {
+                //head is empty
+                hashtable[bucket] = (node *) malloc(sizeof(node));
+                hashtable[bucket]->next = NULL;
+            //fprintf(stdout,"Head attained\n");
+            
+            
+                if(strlen(newword)<=LENGTH)
+                {   
+                    //change strcpy
+                    snprintf(hashtable[bucket]->word,sizeof(hashtable[bucket]->word),newword);
+                    free(newword);
+                
+                }
+                else
+                {
+                    fprintf(stdout,"WARN: Could not add word from dictionary due to size violation");
+                    fprintf(stdout,"Skipping ......");
+                }
+            fprintf(stdout,"DEBUG: word |%s| placed in bucket:%d at head: word_count=%d\n",hashtable[bucket]->word,bucket,count);
+            }
+            else
+            {
+                 hashmap_t temp=head;
+
+            //fprintf(stdout,"bucket attained %d\n",bucket);
+
+                int pos=0;
+                while(temp->next!=NULL)
+                {   
+                    pos=pos+1;
+                    temp=temp->next;
+                }
+                hashmap_t newnode = (node *) malloc(sizeof(node));
+                if(strlen(word1)<=LENGTH)
+                {
+                    snprintf(newnode->word,sizeof(newnode->word),newword);
+                    free(newword);
+                }
+                newnode->next=0;
+                temp->next = newnode;
+                fprintf(stdout,"DEBUG: word |%s| placed in bucket:%d at pos %d: word_count=%d\n",newword,bucket,pos+1,count);
+            }   
+        }
+        }
+        fprintf(stdout,"DEBUG:EXIT load_dictionary()\n");
         return true;
 }
 

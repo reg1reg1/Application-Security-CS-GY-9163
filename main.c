@@ -28,7 +28,7 @@ int main(int argc, char *argv[] )
 		const char *inputText = argv[1];
 		
 		fprintf(stdout,"%s %s\n",dictionary,inputText);
-		status=load_dictionary_2(dictionary,hashtable);
+		status=load_dictionary(dictionary,hashtable);
 		if(!status)
 		{
 			fprintf(stdout,"Could not load dictionary file,...\n Aborting ...\n");
