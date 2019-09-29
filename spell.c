@@ -24,7 +24,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
   		if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c=='.' || c==',' || c==';' || c=='?' || c=='!' || c==':') {
     		//wordfunction(word)
     		fprintf(stdout,"DEBUG: IF Entered\n");
-    		fprintf(stdout,"INFO: Checking word->***%s***\n",word);
+    		fprintf(stdout,"INFO: Checking word->***%s*** (Mispell Count) %d\n",word,count);
     		const char* w1 = word;
     		//consider the word spelling
     		if(check_word(w1,hashtable))
@@ -34,7 +34,12 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
     		}
     		else
     		{	
-
+                    if(count>=2000)
+                    {   
+                    fprintf(stdout, "ERROR: Mispell words exceed acceptable count limit of 2000. Aborting....\n");
+                    fclose(fp);
+                    return false;
+                    }
     				misspelled[count]=malloc(strlen(word)+1);
 					snprintf(misspelled[count],strlen(word)+1,word);
     				fprintf(stdout,"INFO: Mispelled-Case-1: |%s| Added to mispelled \n",misspelled[count]);
@@ -64,6 +69,12 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
     			word[index++]='~';
     			word[index]='\0';
     			index=0;
+                if(count>=2000)
+                {   
+                    fprintf(stdout, "ERROR: Mispell words exceed acceptable count limit of 2000. Aborting....\n");
+                    fclose(fp);
+                    return false;
+                }
     			misspelled[count]=malloc(strlen(word)+1);
 				snprintf(misspelled[count],strlen(word)+1,word);
                 fprintf(stdout,"INFO: Mispelled-Case-2: |%s| Added to mispelled \n",misspelled[count]);
@@ -107,7 +118,13 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 
     		}
     		else
-    		{	
+    		{	    
+                    if(count>=2000)
+                    {   
+                    fprintf(stdout, "ERROR: Mispell words exceed acceptable count limit of 2000. Aborting....\n");
+                    fclose(fp);
+                    return false;
+                    }
 
     				misspelled[count]=malloc(strlen(word)+1);
 					snprintf(misspelled[count],strlen(word)+1,word);
@@ -230,7 +247,11 @@ bool check_word(const char* word, hashmap_t hashtable[])
 	return found;
 }
 
-//the input is the filename
+/**
+This function assumes dictionary is a wordlist with newline separated words
+It does not split words on the basis of other delimiters such as space and full stop.
+
+**/
 bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 {
     //inserting into hashmap_t
