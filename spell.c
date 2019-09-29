@@ -118,6 +118,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 	
 	fprintf(stdout,"DEBUG:Exit check_words_spaces\n");
 	fflush(stdout);
+    fclose(fp);
 	return count;
 	
 }
