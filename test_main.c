@@ -105,10 +105,10 @@ START_TEST(test_check_words_huge)
     expected[1] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG~";
     expected[2] = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBCC~";
     expected[3] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    expected[5] = "FFFF";
+    expected[4] = "FFFF";
     FILE *fp = fopen(INPUT2, "r");
     int num_misspelled = check_words(fp, hashtable, misspelled);
-    ck_assert(num_misspelled == 3);
+    ck_assert(num_misspelled == 5);
     bool test = strlen(misspelled[0]) == strlen(expected[0]);
     int len1 = strlen(misspelled[0]);
     int len2 = strlen(expected[0]);
