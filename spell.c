@@ -5,12 +5,7 @@
 #include <ctype.h>
 #include "dictionary.h"
 
-//Takes the name of file to be read as Input
 
-
-// Maps a word to an integer value to place it in the hash table.
-// Sum the value of each character in the word, then find the 
-// remainder after dividing by the size of the hash table.
 
 int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 {	
@@ -126,8 +121,9 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 	return count;
 	
 }
-//effectively ignores a stream of punctuation marks. Punctuation marks are treated as delimiters
-// car.cat are 2 words
+/**
+    effectively ignores a stream of punctuation marks. Punctuation marks are treated as delimiters
+**/
 bool newLineOrSpaces(const char* word)
 	{	
 		fprintf(stdout,"DEBUG: Enter newLineOrSpaces\n");
@@ -146,7 +142,9 @@ bool newLineOrSpaces(const char* word)
 		fprintf(stdout,"DEBUG:Exit newLineOrSpaces condition %s\n",condition ? "true" : "false");
 		return condition;
 	}
-
+/**
+Checks whether a string is constructed only based on numbers
+**/
 bool isNumber(const char* word)
 {	
 	fprintf(stdout,"DEBUG: Enter isNumber\n");
@@ -167,7 +165,9 @@ bool isNumber(const char* word)
 }
 
 
-//length check is already applied in check_words function so not needed here
+/**
+
+**/
 bool check_word(const char* word, hashmap_t hashtable[])
 {	
 	fprintf(stdout,"DEBUG:ENTER check_word()\n");
@@ -250,12 +250,14 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
      char word1[47];
  
      while(fgets(word1, sizeof(word1), fp) != NULL) {
-         //fputs(chunk, stdout);
-
         
-        //fprintf(stdout,"word1 %s %d \n",word1,word1[strlen(word1)-1]);
-        
-
+            
+        /**
+        This part of code is to avoid the case where the last line of the 
+        dictionary file is read. If the dictionary does not end in a new line the last 
+        word ends up being ignored. Hence this piece of code checks for this case and also
+        converts the word to lowercase before adding it to the dictionary.
+        **/
    		char* newword =0;
         if(word1[strlen(word1)-1]==10)
         {
@@ -366,7 +368,7 @@ void print_bucket(int bucket,hashmap_t x[])
     hashmap_t temp = head;
     while(temp!=NULL)
         {         
-        	//fprintf(stdout,"%s\n",temp->word);  
+        	fprintf(stdout,"%s\n",temp->word);  
             if(temp->next!=NULL)
             {	//fprintf(stdout,"debug 2:");
             	temp=temp->next;

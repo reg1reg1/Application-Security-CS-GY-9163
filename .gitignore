@@ -2,3 +2,4 @@
 spell
 *.o
 *.h.*
+spell_check.exe
