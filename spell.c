@@ -4,7 +4,90 @@
 #include <ctype.h>
 #include "dictionary.h"
 
+/**
+    effectively ignores a stream of punctuation marks. Punctuation marks are treated as delimiters
+**/
+bool newLineOrSpaces(const char* word)
+    {   
+        //fprintf(stdout,"DEBUG: Enter newLineOrSpaces\n");
+        bool condition=true;
+        int length = strlen(word);
+        int i=0;
+        while(i<length)
+        {
+            if(!(word[i]=='\t' || word[i]==' ' || word[i]=='\n' || word[i]=='\r' || word[i]=='.' || word[i]==',' || word[i]==';'|| word[i]=='?' || word[i]=='!' || word[i]==':' || word[i]==EOF))
+            {
+                condition=false;
+                break;
+            }
+            i++;
+        }
+        //fprintf(stdout,"DEBUG:Exit newLineOrSpaces condition %s\n",condition ? "true" : "false");
+        return condition;
+    }
 
+ 
+/**
+Checks whether a string is constructed only based on numbers
+**/
+bool isNumber(const char* word)
+{   
+    //fprintf(stdout,"DEBUG: Enter isNumber\n");
+    bool condition=true;
+    int length=strlen(word);
+    int i=0;
+    while(i<length)
+    {
+        if(!isdigit(word[i]))
+        {
+            condition=false;
+            break;
+        }
+        i++;
+    }
+    //fprintf(stdout,"DEBUG:Exit isNumber condition %s\n",condition ? "true" : "false");
+    return condition;
+}
+//check function to print all words in a bucket (same hashfunction value)
+void print_bucket(int bucket,hashmap_t x[])
+{   
+    //fprintf(stdout,"DEBUG: ENTER print_bucket()\n");
+    hashmap_t head = x[bucket];
+    hashmap_t temp = head;
+    while(temp!=NULL)
+        {         
+            fprintf(stdout,"%s\n",temp->word);  
+            if(temp->next!=NULL)
+            {   //fprintf(stdout,"debug 2:");
+                temp=temp->next;
+            }
+            else
+            {   //fprintf(stdout,"debug 3:");
+                break;
+            }
+            
+            
+        }
+        //fprintf(stdout,"DEBUG: EXIT print_bucket()\n");
+       
+}
+
+
+void print_mispelled(char * mispelled[],int count)
+{   
+    //fprintf(stdout,"DEBUG:spell.c:ENTER printf_mispelled()\n");
+    char **ptr;
+    ptr= mispelled;
+    int i=0;
+    while(i<count)
+    {
+        fprintf(stdout,"%d. <<%s>>\n",i+1,*(ptr+i));
+        i+=1;
+    }
+    
+    //fprintf(stdout,"DEBUG:spell.c:EXIT printf_mispelled()\n");
+    return;
+}
 int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 {	
     fflush(stdout);
@@ -138,50 +221,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 	
 }
 
-/**
-    effectively ignores a stream of punctuation marks. Punctuation marks are treated as delimiters
-**/
-bool newLineOrSpaces(const char* word)
-	{	
-		//fprintf(stdout,"DEBUG: Enter newLineOrSpaces\n");
-		bool condition=true;
-		int length = strlen(word);
-		int i=0;
-		while(i<length)
-		{
-			if(!(word[i]=='\t' || word[i]==' ' || word[i]=='\n' || word[i]=='\r' || word[i]=='.' || word[i]==',' || word[i]==';'|| word[i]=='?' || word[i]=='!' || word[i]==':' || word[i]==EOF))
-			{
-				condition=false;
-				break;
-			}
-			i++;
-		}
-		//fprintf(stdout,"DEBUG:Exit newLineOrSpaces condition %s\n",condition ? "true" : "false");
-		return condition;
-	}
 
- 
-/**
-Checks whether a string is constructed only based on numbers
-**/
-bool isNumber(const char* word)
-{	
-	//fprintf(stdout,"DEBUG: Enter isNumber\n");
-	bool condition=true;
-	int length=strlen(word);
-	int i=0;
-	while(i<length)
-	{
-		if(!isdigit(word[i]))
-		{
-			condition=false;
-			break;
-		}
-		i++;
-	}
-	//fprintf(stdout,"DEBUG:Exit isNumber condition %s\n",condition ? "true" : "false");
-	return condition;
-}
 
 
 
@@ -519,42 +559,3 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 
 
 //check function to print all words in a bucket (same hashfunction value)
-void print_bucket(int bucket,hashmap_t x[])
-{	
-	//fprintf(stdout,"DEBUG: ENTER print_bucket()\n");
-    hashmap_t head = x[bucket];
-    hashmap_t temp = head;
-    while(temp!=NULL)
-        {         
-        	fprintf(stdout,"%s\n",temp->word);  
-            if(temp->next!=NULL)
-            {	//fprintf(stdout,"debug 2:");
-            	temp=temp->next;
-            }
-            else
-            {	//fprintf(stdout,"debug 3:");
-            	break;
-            }
-            
-            
-        }
-        //fprintf(stdout,"DEBUG: EXIT print_bucket()\n");
-       
-}
-
-
-void print_mispelled(char * mispelled[],int count)
-{	
-	//fprintf(stdout,"DEBUG:spell.c:ENTER printf_mispelled()\n");
-	char **ptr;
-	ptr= mispelled;
-	int i=0;
-	while(i<count)
-	{
-		fprintf(stdout,"%d. <<%s>>\n",i+1,*(ptr+i));
-		i+=1;
-	}
-	
-	//fprintf(stdout,"DEBUG:spell.c:EXIT printf_mispelled()\n");
-	return;
-}
