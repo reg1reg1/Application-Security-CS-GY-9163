@@ -334,7 +334,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
                 if(strlen(newword)<=LENGTH)
                 {   
                     //change strcpy
-                    snprintf(hashtable[bucket]->word,sizeof(hashtable[bucket]->word),newword);
+                    snprintf(hashtable[bucket]->word,sizeof(hashtable[bucket]->word),"%s",newword);
                     free(newword);
                 
                 }
@@ -360,7 +360,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
                 hashmap_t newnode = (node *) malloc(sizeof(node));
                 if(strlen(word1)<=LENGTH)
                 {
-                    snprintf(newnode->word,sizeof(newnode->word),newword);
+                    snprintf(newnode->word,sizeof(newnode->word),"%s",newword);
                     free(newword);
                 }
                 newnode->next=0;
@@ -477,7 +477,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
                 if(strlen(newword)<=LENGTH)
                 {   
                     //change strcpy
-                    snprintf(hashtable[bucket]->word,sizeof(hashtable[bucket]->word),newword);
+                    snprintf(hashtable[bucket]->word,sizeof(hashtable[bucket]->word),"%s",newword);
                     free(newword);
                 
                 }
@@ -503,7 +503,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
                 hashmap_t newnode = (node *) malloc(sizeof(node));
                 if(strlen(word1)<=LENGTH)
                 {
-                    snprintf(newnode->word,sizeof(newnode->word),newword);
+                    snprintf(newnode->word,sizeof(newnode->word),"%s",newword);
                     free(newword);
                 }
                 newnode->next=0;
