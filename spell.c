@@ -105,6 +105,8 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 	//fprintf(stdout,"DEBUG:Enter check_words_spaces\n");
 	char word[47];
 	char c;
+    char* w2;
+    const char* w1;
 	if(fp == NULL) {
          perror("Unable to open file!");
           exit(1);
@@ -123,7 +125,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
             
             
 
-            char* w2 = word;
+            w2 = word;
             int index2=strlen(w2)-1;
             //fprintf(stdout,"|%s| before stripping %d\n",w2,strlen(w2));
             while(index2>0)
@@ -137,7 +139,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
             w2[index2+1]='\0';
             //fprintf(stdout,"|%s|%s| after stripping\n\n",w2,word);
     		//consider the word spelling
-    		const char* w1=w2;
+    		w1=w2;
             if(check_word(w1,hashtable))
     		{
     			//fprintf(stdout,"INFO: Correct spelling <%s>\n",word);
@@ -257,6 +259,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 	//fprintf(stdout,"DEBUG:Exit check_words_spaces\n");
 	fflush(stdout);
     fclose(fp);
+
 	return count;
 	
 }
