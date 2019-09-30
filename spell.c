@@ -539,7 +539,7 @@ void print_bucket(int bucket,hashmap_t x[])
             
         }
         //fprintf(stdout,"DEBUG: EXIT print_bucket()\n");
-        return ;
+       
 }
 
 
