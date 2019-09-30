@@ -102,9 +102,9 @@ START_TEST(test_check_words_huge)
     char* misspelled[MAX_MISSPELLED];
     load_dictionary(TESTDICT1, hashtable);
     char* expected[5];
-    expected[0] = "oons";
-    expected[1] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG~";
-    expected[2] = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBCC~";
+    expected[0] = "cart.oons";
+    expected[1] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG";
+    expected[2] = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBCC";
     expected[3] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     expected[4] = "FFFF";
     FILE *fp = fopen(INPUT2, "r");
@@ -137,7 +137,7 @@ START_TEST(test_check_words_edge)
     char* expected[3];
     expected[0] = "ieefgj";
     expected[1] = "hujp";
-    expected[2] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA~";
+    expected[2] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     FILE *fp = fopen(INPUT4, "r");
     int num_misspelled = check_words(fp, hashtable, misspelled);
     ck_assert(num_misspelled == 3);
