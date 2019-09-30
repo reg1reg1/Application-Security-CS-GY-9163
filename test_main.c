@@ -170,7 +170,7 @@ check_word_suite(void)
 }
 
 
-main(void)
+void main(void)
 {
     int failed;
     Suite *suite;
