@@ -140,6 +140,8 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
             //fprintf(stdout,"|%s|%s| after stripping\n\n",w2,word);
     		//consider the word spelling
     		w1=w2;
+            w2=NULL;
+            free(w2);
             if(check_word(w1,hashtable))
     		{
     			//fprintf(stdout,"INFO: Correct spelling <%s>\n",word);
@@ -153,8 +155,8 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
                     //fclose(fp);
                     return false;
                     }
-    				misspelled[count]=malloc(strlen(w2)+1);
-					snprintf(misspelled[count],strlen(w2)+1,word);
+    				misspelled[count]=malloc(strlen(word)+1);
+					snprintf(misspelled[count],strlen(word)+1,word);
     				//fprintf(stdout,"INFO: Mispelled-Case-1: |%s| Added to mispelled \n",misspelled[count]);
     				count+=1;
     		}
