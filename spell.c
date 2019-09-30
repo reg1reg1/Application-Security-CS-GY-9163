@@ -150,7 +150,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
                     if(count>=2000)
                     {   
                     //fprintf(stdout, "ERROR: Mispell words exceed acceptable count limit of 2000. Aborting....\n");
-                    fclose(fp);
+                    //fclose(fp);
                     return false;
                     }
     				misspelled[count]=malloc(strlen(word)+1);
@@ -185,7 +185,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
                 if(count>=2000)
                 {   
                     //fprintf(stdout, "ERROR: Mispell words exceed acceptable count limit of 2000. Aborting....\n");
-                    fclose(fp);
+                    //fclose(fp);
                     return false;
                 }
     			misspelled[count]=malloc(strlen(word)+1);
@@ -261,7 +261,6 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
     fclose(fp);
 
 	return count;
-	
 }
 
 
