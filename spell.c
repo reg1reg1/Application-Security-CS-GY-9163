@@ -5,8 +5,19 @@
 #include "dictionary.h"
 
 /**
-    effectively ignores a stream of punctuation marks. Punctuation marks are treated as delimiters
+    effectively ignores a stream of punctuation marks. Punctuation marks are ignored in trail but not in between
+    English Language has 14, but this spell checker only recognizes the following as punctuation.
 **/
+bool isPunctuation(char c)
+{
+    if(c=='.'|| c==',' || c=='?' || c=='\'' || c==';' || c=='!' || c==':' || c=='\"')
+    {
+        return true;
+    }
+    return false;
+
+}
+
 bool newLineOrSpaces(const char* word)
     {   
         //fprintf(stdout,"DEBUG: Enter newLineOrSpaces\n");
@@ -15,7 +26,7 @@ bool newLineOrSpaces(const char* word)
         int i=0;
         while(i<length)
         {
-            if(!(word[i]=='\t' || word[i]==' ' || word[i]=='\n' || word[i]=='\r' || word[i]=='.' || word[i]==',' || word[i]==';'|| word[i]=='?' || word[i]=='!' || word[i]==':' || word[i]==EOF))
+            if(!(word[i]=='\t' || word[i]==' ' || word[i]=='\n' || word[i]=='\r' || isPunctuation(word[i]) || word[i]==EOF))
             {
                 condition=false;
                 break;
@@ -26,7 +37,7 @@ bool newLineOrSpaces(const char* word)
         return condition;
     }
 
- 
+
 /**
 Checks whether a string is constructed only based on numbers
 **/
@@ -102,13 +113,32 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
 	int count=0;
 	do {
   		c = (char)fgetc(fp);
-  		if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c=='.' || c==',' || c==';' || c=='?' || c=='!' || c==':') {
+  		if(c == ' ' || c == '\n' || c == '\0' || c == '\t') {
     		//wordfunction(word)
     		//fprintf(stdout,"DEBUG: IF Entered\n");
     		//fprintf(stdout,"INFO: Checking word->***%s*** (Mispell Count) %d\n",word,count);
-    		const char* w1 = word;
+    		
+            
+                //Stripping the word of trailing punctuations
+            
+            
+
+            char* w2 = word;
+            int index2=strlen(w2)-1;
+            //fprintf(stdout,"|%s| before stripping %d\n",w2,strlen(w2));
+            while(index2>0)
+            {   
+            if(!isPunctuation(w2[index2]))
+            {   
+            break;
+            }
+            index2-=1;
+            }
+            w2[index2+1]='\0';
+            //fprintf(stdout,"|%s|%s| after stripping\n\n",w2,word);
     		//consider the word spelling
-    		if(check_word(w1,hashtable))
+    		const char* w1=w2;
+            if(check_word(w1,hashtable))
     		{
     			//fprintf(stdout,"INFO: Correct spelling <%s>\n",word);
 
@@ -139,7 +169,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
     				c = (char)fgetc(fp);
     				
     			// Could put this inside a function, but this a lazy way to do the same.
-    			if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c=='.' || c==',' || c==';' || c=='?' || c=='!' || c==':' || c==EOF)
+    			if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c==EOF)
     			{
     				break;
     			}	
@@ -147,7 +177,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
     			}
     			//fprintf(stdout,"Stopping char ignore at %c\n",c);
     			
-    			word[index++]='~';
+    			
     			word[index]='\0';
     			index=0;
                 if(count>=2000)
@@ -190,6 +220,16 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
                 }
 
             }
+            int index=strlen(word)-1;
+            while(index>0)
+            {   
+            if(!isPunctuation(word[index]))
+            {   
+            break;
+            }
+            index-=1;
+            }
+            word[index+1]='\0';
 			const char* w2 = word;
     		//consider the word spelling
             //fprintf(stdout,"TRACE: Last word of the file ||%s||\n",word);
@@ -232,7 +272,7 @@ bool check_word(const char* word, hashmap_t hashtable[])
 {	
 	//fprintf(stdout,"DEBUG:ENTER check_word()\n");
 	fflush(stdout);
-	
+	//fprintf(stdout,"Checking %s",word);
 	int bucket=-1;
 	
 	//fprintf(stdout,"DEBUG 9:\n");
@@ -255,6 +295,9 @@ bool check_word(const char* word, hashmap_t hashtable[])
 
 	//fprintf(stdout,"%s\n",lower);
 	//ignoring cases in the spellchecker
+
+
+
 	char *lower=(char*)malloc(strlen(word)+1);
 	memcpy(lower,word,strlen(word));
 	lower[strlen(word)]=0;
@@ -267,6 +310,7 @@ bool check_word(const char* word, hashmap_t hashtable[])
 			}
 		}
 	
+    
 	bucket= hash_function(lower);
 	
 	//
@@ -318,7 +362,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
      char word1[47];
      do {
         c = (char)fgetc(fp);
-        if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c=='.' || c==',' || c==';' || c=='?' || c=='!' || c==':') {
+        if(c == ' ' || c == '\n' || c == '\0' || c == '\t') {
             //wordfunction(word)
             //fprintf(stdout,"DEBUG: Loading %s \n",word1);
             
@@ -422,7 +466,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
                     c = (char)fgetc(fp);
                     
                 // Could put this inside a function, but this a lazy way to do the same.
-                if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c=='.' || c==',' || c==';' || c=='?' || c=='!' || c==':' || c==EOF)
+                if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c==EOF)
                 {
                     break;
                 }   
