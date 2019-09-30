@@ -74,7 +74,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char * misspelled[])
                     return false;
                 }
     			misspelled[count]=malloc(strlen(word)+1);
-				snprintf(misspelled[count],strlen(word)+1,word);
+				snprintf(misspelled[count],strlen(word)+1,"%s",word);
                 //fprintf(stdout,"INFO: Mispelled-Case-2: |%s| Added to mispelled \n",misspelled[count]);
     			//fprintf(stdout,"INFO: Mispelled-Case-2: |%s|, truncated and added to mispelled \n",misspelled[count]);
     			word[0] = 0;
