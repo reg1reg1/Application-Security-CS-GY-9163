@@ -494,7 +494,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
      
             } 
         }while(c != EOF);
-        fclose(fp);
+        
         //fprintf(stdout,"LAST word %s\n",word1);
         if(word1!=NULL)
         {   
@@ -597,6 +597,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
         }
         }
         //fprintf(stdout,"DEBUG:EXIT load_dictionary()\n");
+        fclose(fp);
         return true;
 }
 
