@@ -24,7 +24,7 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
+    
     
     #This is the only url configured
     app.register_blueprint(login.root_view)
