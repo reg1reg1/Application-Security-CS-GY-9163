@@ -26,6 +26,9 @@ def create_app(test_config=None):
 
     
     
-    #This is the only url configured
+    #Registering the database part.
+    db.init_app(app)
+    
+    #registering the blueprint of view
     app.register_blueprint(login.root_view)
     return app

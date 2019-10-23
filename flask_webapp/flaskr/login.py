@@ -9,7 +9,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from flaskr.db import get_db
 
 #rootview
-root_view = Blueprint('main', __name__, url_prefix='/')
+root_view = Blueprint('login', __name__, url_prefix='')
 
 @root_view.route('/register', methods=('GET', 'POST'))
 def register():
@@ -86,4 +86,13 @@ def load_logged_in_user():
         ).fetchone()
 
 
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('login.login'))
+
+        return view(**kwargs)
+
+    return wrapped_view
 
