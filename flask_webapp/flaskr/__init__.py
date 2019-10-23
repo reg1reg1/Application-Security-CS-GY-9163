@@ -2,7 +2,7 @@ import os
 
 from flask import Flask
 from . import login
-
+from . import db
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -26,9 +26,14 @@ def create_app(test_config=None):
 
     
     
+    
     #Registering the database part.
     db.init_app(app)
+    with app.app_context():
+    # within this block, current_app points to app.
+        #print(current_app.name)
+        db.init_db()
     
-    #registering the blueprint of view
     app.register_blueprint(login.root_view)
+    
     return app
