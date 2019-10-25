@@ -3,6 +3,7 @@ import os
 from flask import Flask
 from . import login
 from . import db
+from . import spellcheck
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -35,5 +36,7 @@ def create_app(test_config=None):
         db.init_db()
     
     app.register_blueprint(login.root_view)
+    app.register_blueprint(spellcheck.bp)
+    app.add_url_rule('/', endpoint='spellcheck')
     
     return app

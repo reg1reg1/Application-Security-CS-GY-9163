@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Spell Check{% endblock %}
+{% block content %}
+<div class="container">
+  <h2>Spell-Check Results</h2>
+  <div class="alert alert-success" role="alert">
+  <h4 class="alert-heading">Spell-check results</h4>
+  <ul>
+  {% for word in wordList   %} 
+    <li>{{word}}</li> 
+{%endfor%}
+  </ul>
+  <hr>
+  <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+</div>
+</div>
+  </body>
+</html>
+{% endblock %}

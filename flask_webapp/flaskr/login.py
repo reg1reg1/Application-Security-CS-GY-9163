@@ -29,7 +29,7 @@ def register():
         print(username,password,phone)
         db = get_db()
         error = None
-
+        
         if not username:
             error = 1
         elif not password:
@@ -40,7 +40,8 @@ def register():
             error = 'User {} is already registered.'.format(username)
         
         print(error)
-
+        
+        #SQLI->SANITIZE
         if error is None:
             db.execute(
                 'INSERT INTO user (username, password,phone) VALUES (?, ?, ?)',
@@ -69,7 +70,7 @@ def logout():
 
 @root_view.route('/loginresult')
 def loginresult():
-    
+    #Sanitize result
     return render_template('/loginok.html',result=request.args.get('result'))
     
 
@@ -78,14 +79,16 @@ def loginresult():
 def login():
     
     if request.method == 'POST':
+        #logged in users should not try to login
+        user_id = g.user
+        if user_id is not None:
+            return redirect(url_for('login.welcome'))
         username = request.form['uname']
         password = request.form['pword']
         twoFactorCode = request.form['2fa']
         
         #Sanitize and encode the received input here:
         print("values received",username,password,twoFactorCode)
-        
-        
         
         db = get_db()
         error = None
