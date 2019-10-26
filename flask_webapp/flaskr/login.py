@@ -6,17 +6,16 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from flaskr.db import get_db
+
+from db import get_db
 
 #rootview
 root_view = Blueprint('login', __name__, url_prefix='')
 
-
-    
-
 @root_view.route('/',methods=['GET'])
 def welcome():
     return render_template('/welcome.html')
+
 
 
 
@@ -48,20 +47,14 @@ def register():
                 (username, generate_password_hash(password),phone)
             )
             db.commit()
-            return redirect(url_for('login.regsuccess'))
+            return render_template('/successful.html')
         else:
-            return redirect(url_for('login.regfail'))
+            return render_template('/regfail.html')
         flash(error)
 
     return render_template('/register.html')
 
-@root_view.route('/regok',methods=['GET'])
-def regsuccess():
-    return render_template('/successful.html')
 
-@root_view.route('/regfail',methods=['GET'])
-def regfail():
-    return render_template('/regfail.html')
 
 @root_view.route('/logout')
 def logout():

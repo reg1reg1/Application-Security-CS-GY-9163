@@ -4,10 +4,23 @@ from flask import (
 from werkzeug.exceptions import abort
 import os
 import subprocess
-from flaskr.login import login_required
-from flaskr.db import get_db
+from flask_wtf.csrf import CsrfProtect
+from flask_wtf.csrf import CSRFError
+
+csrf = CsrfProtect()
+from login import login_required
+from db import get_db
 
 bp = Blueprint('spell_check', __name__)
+
+
+@bp.errorhandler(CSRFError)
+def handle_csrf_error(e):
+    return render_template('error.html', reason=e.description)
+
+@bp.before_request
+def check_csrf():
+    csrf.protect()
  
 
 @bp.route('/spell_check',methods=['POST'])
@@ -28,6 +41,7 @@ def spell_check():
         f = open(fileName, 'w+')
         f.write(wordStr)
         f.close()
+        suppliedText = wordStr
         #output = subprocess.check_output(['ls'])
         #print(output)
         #FNULL = open(os.devnull, 'w')
@@ -36,17 +50,20 @@ def spell_check():
             popen = subprocess.Popen(args, stdout=subprocess.PIPE)
             popen.wait()
             output = popen.stdout.read()
+            #print(output)
+            #print(type(output))
+            output=output.decode().replace("\n",",")
+            print("Mispelled words returned as ",output)
         except subprocess.CalledProcessError as e:   
             print("Error :", e)
-        print(output)
-        
-        
-        
         #fetch output
+        
         #encode output as string 
+        
         #sanitize output, remove characters which can cause issues
+        
         #send output in form of array to render_template
         
         
     
-    return render_template('/spell.html',wordList=words)
+    return render_template('/spell.html',textout=suppliedText,mispelled=output)

@@ -6,6 +6,7 @@
   <p class="lead">It is a spellchecker written in flask and uses C-code at the backend for the application logic</p>
   {% if g.user %}
      <form method="post" action="/spell_check">
+       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <div class="form-group">
       <label for="inputtext">Text:</label>
       <textarea class="form-control vresize" name="inputtext" id="inputtext" required ></textarea>
