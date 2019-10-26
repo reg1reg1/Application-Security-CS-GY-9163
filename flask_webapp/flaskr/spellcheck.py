@@ -23,7 +23,7 @@ def check_csrf():
     csrf.protect()
  
 
-@bp.route('/spell_check',methods=['POST'])
+@bp.route('/spell_check',methods=['GET','POST'])
 @login_required
 def spell_check():
     if request.method == 'POST':
@@ -56,6 +56,10 @@ def spell_check():
             print("Mispelled words returned as ",output)
         except subprocess.CalledProcessError as e:   
             print("Error :", e)
+        
+        return render_template('/spell.html',textout=suppliedText,mispelled=output)
+    else:
+        return render_template('/welcome.html')
         #fetch output
         
         #encode output as string 
@@ -66,4 +70,4 @@ def spell_check():
         
         
     
-    return render_template('/spell.html',textout=suppliedText,mispelled=output)
+    
