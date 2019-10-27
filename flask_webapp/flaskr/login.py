@@ -91,7 +91,7 @@ def login():
             'SELECT * FROM user WHERE username = ?', (username,)
         ).fetchone()
         
-        print("values received from the database are as follows",db)
+        print("values received from the database are as follows",user)
         
         if user is None:
             error = "Incorrect credentials"

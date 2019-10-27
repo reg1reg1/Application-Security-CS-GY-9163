@@ -20,7 +20,7 @@ def create_app(test_config=None):
     )
     app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE='Lax',
+    SESSION_COOKIE_SAMESITE='Strict',
     )
     if test_config is None:
         # load the instance config, if it exists, when not testing
