@@ -104,6 +104,7 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user['id']
+            session.permanent = True
             
         return redirect(url_for('login.loginresult',result=error))
         flash(error)
@@ -137,3 +138,8 @@ def login_required(view):
 
     return wrapped_view
 
+@root_view.after_request
+def apply_caching(response):
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    response.headers['Content-Security-Policy'] = "default-src 'self'"
+    return response

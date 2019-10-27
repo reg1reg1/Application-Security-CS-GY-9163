@@ -69,5 +69,9 @@ def spell_check():
         #send output in form of array to render_template
         
         
-    
+@bp.after_request
+def apply_caching(response):
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    response.headers['Content-Security-Policy'] = "default-src 'self'"
+    return response   
     

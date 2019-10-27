@@ -4,9 +4,9 @@
   <title>Bootstrap Example</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="static/css/bootstrap.min.css">
+  <script src="static/js/jquery-min.js"></script>
+  <script src="static/js/bootstrap.min.js"></script>
   {% endblock %}
 {% block navbar %}
 <nav class="navbar navbar-inverse">
@@ -40,7 +40,7 @@
       <input class="form-control" placeholder="Enter password" type="password" name="pword" id="pword" required>
     </div>
     <div class="form-group">
-      <label for="2fa">Phone-number: (Expected format: 123-456-7890)</label>
+      <label for="2fa">Phone-number: (Expected format: 1234567890)</label>
       <input type="tel" name="2fa" id="2fa" required>
     </div>
     <button type="submit" class="btn btn-primary">Register</button>

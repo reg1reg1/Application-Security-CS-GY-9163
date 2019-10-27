@@ -1,1 +1,1 @@
- <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+Hello, there . I could see the future, and never been better before.
