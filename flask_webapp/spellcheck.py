@@ -20,14 +20,37 @@ def handle_csrf_error(e):
 
 @bp.before_request
 def check_csrf():
+    
+    print("CSRF-protection-CALLED")
     csrf.protect()
  
+
+@bp.route('/logout')
+def logout():
+    print(request.headers)
+    originSplice=str(request.headers)
+    #print(originSplice)
+    #refererValue=originSplice.split('Referer: ')[1].split('\r')[0]
+    #print("LOGOUT",refererValue)
+    if request.referrer is not None:
+        hostExtract=str(request.referrer).split("http://")[1]
+        if hostExtract is not None:
+            
+            verb=hostExtract.split("/")
+            print("TEST-VALUE",verb)
+            if verb is not None and request.headers.get('host') is not None:
+                if str(verb[0])==request.headers.get('host'):
+                    session.clear()
+    return redirect(url_for('login.welcome'))
+        
 
 @bp.route('/spell_check',methods=['GET','POST'])
 @login_required
 def spell_check():
     if request.method == 'POST':
-        words=["abc","def"]
+        
+        print(request.headers.get('origin'))
+
         wordStr = request.form['inputtext']
         
         #Most crucial part

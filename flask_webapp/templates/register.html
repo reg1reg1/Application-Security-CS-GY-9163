@@ -17,7 +17,7 @@
     <ul class="nav navbar-nav">
     {% if g.user %}
       <li><span>{{ g.user['username'] }}</span></li>
-      <li><a href="{{ url_for('login.logout') }}">Log Out</a></li>
+      <li><a href="{{ url_for('spell_check.logout') }}">Log Out</a></li>
     {% else %}
       <li class="active" ><a href="{{ url_for('login.register') }}">Register</a></li>
       <li><a href="{{ url_for('login.login') }}">Log In</a></li>

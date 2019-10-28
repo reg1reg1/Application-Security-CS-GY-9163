@@ -56,10 +56,7 @@ def register():
 
 
 
-@root_view.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('login.welcome'))
+
 
 @root_view.route('/loginresult')
 def loginresult():
