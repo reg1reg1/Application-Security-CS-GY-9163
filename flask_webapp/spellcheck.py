@@ -40,6 +40,7 @@ def logout():
             print("TEST-VALUE",verb)
             if verb is not None and request.headers.get('host') is not None:
                 if str(verb[0])==request.headers.get('host'):
+                    print("Session cleared")
                     session.clear()
     return redirect(url_for('login.welcome'))
         
