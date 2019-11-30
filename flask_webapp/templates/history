@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}User Activity{% endblock %}
+{% block content %}
+<div class="container">
+ {% if isValid %}
+ <h2>Queries Made by {% if isAdmin %} {{username}} {% else %}you{% endif %}</h2>
+   {% if num>0 %}
+    <div class="alert alert-info" role="alert">
+    <p class="mb-0" id="numqueries">Total queries: {{num}}</p>
+    </div>
+   <ul  class="list-group">
+   {% for i in textout %}
+    <!-- Jinja does not protect against xss injection in attributes, hence defense in depth, encoding the attribute -->
+    <li class="list-group-item list-group-item-info" id="query{{i}}"><a href="{{'/history/query%s'%i|urlencode }}" onclick="">Query id:{{i}}</a></li>
+   {% endfor %}
+   </ul>
+   {% else %}
+   <div class="alert alert-info" role="alert">
+  <p class="mb-0" id="result">Empty History, No past record</p>
+</div>
+  {% endif %}
+  {% else %}
+   <div class="alert alert-danger" role="alert">
+    <p class="mb-0" id="error">No such user</p>
+    </div>
+  {% endif %}
+  {% if isAdmin %}
+   <form method="post" action="/history">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <div class="form-group">
+      <label for="username">userid:</label>
+      <input class="form-control" placeholder="Enter username to be queried" name="userid" id="userquery" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  {% endif %}
+</div>
+  </body>
+</html>
+{% endblock %}

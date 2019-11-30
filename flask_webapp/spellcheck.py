@@ -6,7 +6,7 @@ import os
 import subprocess
 from flask_wtf.csrf import CsrfProtect
 from flask_wtf.csrf import CSRFError
-
+import datetime
 csrf = CsrfProtect()
 from login import login_required
 from db import get_db
@@ -37,11 +37,20 @@ def logout():
         if hostExtract is not None:
             
             verb=hostExtract.split("/")
-            print("TEST-VALUE",verb)
             if verb is not None and request.headers.get('host') is not None:
                 if str(verb[0])==request.headers.get('host'):
                     print("Session cleared")
+                    user_id = session.get('user_id')
+                    username= get_db().execute(
+            'SELECT * FROM user WHERE id = ?', (user_id,)
+        ).fetchone()
+                    #print(username['username'])
+                    db = get_db()
+                    loginsert = 'INSERT INTO logs(userid, request, request_time) VALUES (?, ?, ?)'
+                    db.execute(loginsert,(username['username'], 'logout', datetime.datetime.now()))
+                    db.commit()
                     session.clear()
+                    
     return redirect(url_for('login.welcome'))
         
 
@@ -80,7 +89,11 @@ def spell_check():
             print("Mispelled words returned as ",output)
         except subprocess.CalledProcessError as e:   
             print("Error :", e)
-        
+        db= get_db()
+        user_name = g.user['username']
+        insertRequest = 'INSERT into queries(userid, query_text, query_response) VALUES (?, ?, ?)'
+        db.cursor().execute(insertRequest,(user_name,suppliedText,output))
+        db.commit()
         return render_template('/spell.html',textout=suppliedText,mispelled=output)
     else:
         return render_template('/welcome.html')
@@ -98,4 +111,15 @@ def apply_caching(response):
     response.headers["X-Frame-Options"] = "SAMEORIGIN"
     response.headers['Content-Security-Policy'] = "default-src 'self'"
     return response   
-    
+
+@bp.before_app_request
+def load_logged_in_user():
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = get_db().execute(
+            'SELECT * FROM user WHERE id = ?', (user_id,)
+        ).fetchone()
+

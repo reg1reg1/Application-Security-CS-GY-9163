@@ -5,7 +5,7 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 from werkzeug.security import check_password_hash, generate_password_hash
-
+import datetime
 
 from db import get_db
 
@@ -33,7 +33,7 @@ def register():
             error = 1
         elif not password:
             error = 1
-        elif db.execute(
+        elif db.cursor().execute(
             'SELECT id FROM user WHERE username = ?', (username,)
         ).fetchone() is not None:
             error = 'User {} is already registered.'.format(username)
@@ -42,9 +42,9 @@ def register():
         
         #SQLI->SANITIZE
         if error is None:
-            db.execute(
-                'INSERT INTO user (username, password,phone) VALUES (?, ?, ?)',
-                (username, generate_password_hash(password),phone)
+            db.cursor().execute(
+                'INSERT INTO user (username, password,phone,isAdmin) VALUES (?, ?, ?, ?)',
+                (username, generate_password_hash(password),phone,False)
             )
             db.commit()
             return render_template('/successful.html')
@@ -84,11 +84,11 @@ def login():
         error = None
         
         #Remove later, chances of sqli
-        user = db.execute(
+        user = db.cursor().execute(
             'SELECT * FROM user WHERE username = ?', (username,)
         ).fetchone()
         
-        print("values received from the database are as follows",user)
+        #print("values received from the database are as follows",user)
         
         if user is None:
             error = "Incorrect credentials"
@@ -102,6 +102,9 @@ def login():
             session.clear()
             session['user_id'] = user['id']
             session.permanent = True
+            loginsert = 'INSERT INTO logs(userid, request, request_time) VALUES (?, ?, ?)'
+            db.cursor().execute(loginsert,(username, 'login', datetime.datetime.now()))
+            db.commit()
             
         return redirect(url_for('login.loginresult',result=error))
         flash(error)
@@ -112,7 +115,8 @@ def login():
         return render_template('/login.html')        
     
 
-#mapping the session to an existing user in the database.
+#mapping the session to an existing user in the database.This will be done before any request is made to app
+# This means no matter what the view is spellchecker or logs, this will always load the uservalue to the G variable.
 @root_view.before_app_request
 def load_logged_in_user():
     user_id = session.get('user_id')
@@ -120,7 +124,7 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = get_db().execute(
+        g.user = get_db().cursor().execute(
             'SELECT * FROM user WHERE id = ?', (user_id,)
         ).fetchone()
 

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}User Activity{% endblock %}
+{% block content %}
+<div class="container">
+ {% if madeQueries %}
+  <ul  class="list-group">
+    <li class="list-group-item list-group-item-info" id="username">{{userid}}</li>
+    <li class="list-group-item list-group-item-info" id="queryid">{{queryId}}</li>
+    <li class="list-group-item list-group-item-info" id="querytext">{{queryText}}</li>
+    <li class="list-group-item list-group-item-info" id="queryresults">{{queryResponse}}</li>
+   </ul>
+  {% else %}
+  <div class="alert alert-info" role="alert">
+  <p class="mb-0" id="error">Query missing or disallowed</p>
+</div>
+  {% endif %}
+</div>
+  </body>
+</html>
+{% endblock %}
