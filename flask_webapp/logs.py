@@ -160,6 +160,7 @@ def query_review(queryId):
                     
                     for i in dbOutput:
                         queryText= i[2]
+                        userid=i[1]
                         queryResponse = i[3]
                         madeQueries= True
                 
