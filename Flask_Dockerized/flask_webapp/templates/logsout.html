@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Spell Check{% endblock %}
+{% block content %}
+<div class="container">
+  {% if valid %}
+  <h2>User Activity for {{username}}</h2>
+   <ul  class="list-group">
+   {% set flag=-1 %}
+   {% for i in textout %}
+    {% if i[2]=='login' %}
+    <li class="list-group-item list-group-item-info" id="login{{i[0]}}_time">User:<b>{{i[1]}}</b>:<i>{{i[2]}}</i> at {{i[3]}}</li>
+    {% set flag=1 %}
+    {% else %}
+    <li class="list-group-item list-group-item-warning" id="logout{{i[0]}}_time">User:<b>{{i[1]}}</b>:<i>{{i[2]}}</i> at {{i[3]}}</li>
+    {% set flag=0 %}
+    {% endif %}
+   {% endfor %}
+   {% if flag==1 %}
+   <li id="logout{{i[0]}}_time list-group-item-warning">User:currently logged in</li>
+   {% endif %}
+   </ul>
+   {% else %}
+   <h2> Failed </h2>
+   <div class="danger alert-danger" role="danger">
+  
+  <h4 class="alert-heading">Supplied text</h4>
+  <hr>
+  <p class="mb-0" id="textout">No such user {{username}}!</p>
+</div>
+  {% endif %}
+</div>
+  </body>
+</html>
+{% endblock %}

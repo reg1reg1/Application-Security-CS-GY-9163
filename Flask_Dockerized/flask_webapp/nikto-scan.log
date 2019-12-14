@@ -1,0 +1,23 @@
+- Nikto v2.1.6
+---------------------------------------------------------------------------
++ Target IP:          127.0.0.1
++ Target Hostname:    127.0.0.1
++ Target Port:        5000
++ Start Time:         2019-10-28 19:57:15 (GMT-4)
+---------------------------------------------------------------------------
++ Server: Werkzeug/0.16.0 Python/3.7.3rc1
++ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS
++ The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type
++ No CGI Directories found (use '-C all' to force check all possible dirs)
++ Allowed HTTP Methods: OPTIONS, HEAD, GET 
++ 7534 requests: 0 error(s) and 3 item(s) reported on remote host
++ End Time:           2019-10-28 19:57:40 (GMT-4) (25 seconds)
+---------------------------------------------------------------------------
++ 1 host(s) tested
+
+
+      *********************************************************************
+      Portions of the server's headers (Python/3.7.3rc1) are not in
+      the Nikto database or are newer than the known string. Would you like
+      to submit this information (*no server specific data*) to CIRT.net
+      for a Nikto update (or you may email to sullo@cirt.net) (y/n)? 

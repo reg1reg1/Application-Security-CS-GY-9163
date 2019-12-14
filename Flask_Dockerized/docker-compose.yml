@@ -1,0 +1,14 @@
+version: '3.1'
+services:
+ node-app:
+  restart: always
+  user: root
+  build: .
+  ports:
+   - "8080:5000"
+  secrets:
+   - secretfile
+
+secrets:
+ secretfile:
+  file: secretfile.yml
