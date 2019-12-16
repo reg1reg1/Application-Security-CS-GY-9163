@@ -20,6 +20,13 @@ spec:
           image: ys3334/spell_check:1.0
           ports:
             - containerPort: 5000
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
           volumeMounts:
           - name: secretfile
             mountPath: "/etc/secrets"
