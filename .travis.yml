@@ -7,7 +7,6 @@ matrix:
       script:
         - cd C-Code/
         - make 
-        - make test
 
     - language: generic            
       sudo: required
@@ -18,7 +17,7 @@ matrix:
         - docker-compose pull
         - docker-compose build
       install:
-        - docker-compose up &
+        - docker-compose up -d
       script:
         - curl http://localhost:8080 | grep "Spellchecker"
         - docker-compose down
