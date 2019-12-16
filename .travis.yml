@@ -8,6 +8,15 @@ matrix:
         - cd C-Code/
         - make 
 
+    - install:
+        - sudo apt-get update -y
+        - apt-get install -y python-pip python-dev
+        - cd Flask_Dockerized/flask_webapp
+        - pip install -r requirements.txt
+      script:
+        - cd Flask_Dockerized/flask_webapp
+        - pytest
+
     - language: generic            
       sudo: required
       services:
@@ -19,7 +28,6 @@ matrix:
       install:
         - docker-compose up -d
       script:
-        - curl http://localhost:8080 | grep "Spellchecker"
         - docker-compose down
 
       
