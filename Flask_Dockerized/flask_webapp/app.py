@@ -33,9 +33,9 @@ def create_app(test_config=None):
         admin_username="admin"
         admin_pass="Administrator@1"
         admin_2fa="12345678901"
-        print("Error in file parsing, reverting to defaults")
+        #print("Error in file parsing, reverting to defaults")
     
-    print("Values are",admin_username,admin_pass,admin_2fa,"|||||")
+    #print("Values are",admin_username,admin_pass,admin_2fa,"|||||")
     
     #expose file or default values will be set
     try:

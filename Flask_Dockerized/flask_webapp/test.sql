@@ -28,5 +28,5 @@ CREATE TABLE logs (
 
 INSERT INTO user (username, password, phone, isAdmin)
 VALUES
-  ('user1', 'pbkdf2:sha256:150000$RVwv8Ig2$0f8cd25ac738722f186550531d1813502bf1581bb8b6908693443aa265e38fe8','1234567890',FALSE),
-  ('reg1','pbkdf2:sha256:150000$qhNflQu7$18ef0e2923c5e93f2ffcdf2ee5ac60a8aa269a7f3e3ce214dddc421e2e269ae0','1234567890',FALSE)
+  ('user1', 'pbkdf2:sha256:150000$RVwv8Ig2$0f8cd25ac738722f186550531d1813502bf1581bb8b6908693443aa265e38fe8','1234567890',0),
+  ('reg1','pbkdf2:sha256:150000$qhNflQu7$18ef0e2923c5e93f2ffcdf2ee5ac60a8aa269a7f3e3ce214dddc421e2e269ae0','1234567890',0)
