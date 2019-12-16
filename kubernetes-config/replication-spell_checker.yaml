@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: spellcheckcontroller
+spec:
+  replicas: 4
+  selector:
+    app: spellchecker
+  template:
+    metadata:
+      labels:
+        app: spellchecker
+    spec:
+      containers:
+        - name: spellchecker
+          image: ys3334/spell_check
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+          - name: secretfile
+            mountPath: "/etc/secrets"
+            readOnly: true
+      volumes:
+        - name: secretfile
+          secret:
+            secretName: secretfile

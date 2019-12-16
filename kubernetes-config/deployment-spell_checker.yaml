@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spellcheckdeployment
+  labels:
+    app: spellchecker
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: spellchecker
+  template:
+    metadata:
+      labels:
+        component: spell-check
+        app: spellchecker
+    spec:
+      containers:
+        - name: spellcheckercontainer
+          image: ys3334/spell_check:1.0
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+          - name: secretfile
+            mountPath: "/etc/secrets"
+            readOnly: true
+      volumes:
+        - name: secretfile
+          secret:
+            secretName: secretfile
