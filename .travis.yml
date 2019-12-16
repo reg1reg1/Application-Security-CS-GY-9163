@@ -12,10 +12,10 @@ matrix:
         - sudo apt-get update -y
         - sudo apt-get install -y python-pip python-dev
         - cd Flask_Dockerized/flask_webapp
-        - pip install -r requirements.txt
+        - sudo pip install -r requirements.txt
       script:
         - cd Flask_Dockerized/flask_webapp
-        - pytest
+        - sudo pytest
 
     - language: generic            
       sudo: required
