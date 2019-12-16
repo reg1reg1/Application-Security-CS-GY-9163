@@ -1,7 +1,28 @@
-before_install:
-  - sudo apt-get install check
-language: c
-compiler: gcc
-script: 
-  - make
-  - make test
+matrix:
+  include:
+    - before_install:
+        - sudo apt-get install check 
+      language: c
+      compiler: gcc
+      script:
+        - cd C-Code/
+        - make 
+        - make test
+
+    - language: generic            
+      sudo: required
+      services:
+        - docker
+      before_install:
+        - cd Flask_Dockerized/
+        - docker-compose pull
+        - docker-compose build
+      install:
+        - docker-compose up
+      script:
+        - curl http://localhost:8080 | grep "Spellchecker"
+
+      
+notifications:
+  email:
+    - ys3334@nyu.edu
