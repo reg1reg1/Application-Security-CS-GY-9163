@@ -4,6 +4,7 @@ services:
   restart: always
   user: root
   build: .
+  image: ys3334/spell_check:2.0
   ports:
    - "8080:5000"
   secrets:

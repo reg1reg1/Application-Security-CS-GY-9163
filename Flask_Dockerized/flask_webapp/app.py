@@ -1,5 +1,4 @@
 import os
-import yaml
 from flask import Flask
 import login
 import db
@@ -15,14 +14,39 @@ def create_app(test_config=None):
     # create and configure the app
     #read from the docker exposed file : > /run/secrets/file_name
     global config_dict
+    admin_username=""
+    admin_pass=""
+    admin_2fa=""
+    secret_key=""
     
+    try:
+        #Exposed via kubernetes or could be done via docker volumes
+        admincred = open("/etc/secrets/admincred","r")
+        for line in admincred:
+            x=line.replace("\n","")
+            break
+        info_list=x.split(":")
+        admin_username = info_list[0]
+        admin_pass=info_list[1]
+        admin_2fa=info_list[2]
+    except:
+        admin_username="admin"
+        admin_pass="Administrator@1"
+        admin_2fa="12345678901"
+        print("Error in file parsing, reverting to defaults")
     
+    print("Values are",admin_username,admin_pass,admin_2fa,"|||||")
     
+    #expose file or default values will be set
+    try:
+        configfile = open("/etc/secrets/dev_key","r")
+        for line in configfile:
+            secret_key=line.replace("\n","")
+    except:
+        print("Error in file parsing, reverting to defaults")
+        secret_key = "default"
     
-    yaml_file = open("/run/secrets/secretfile","r")
-    config_dict = yaml.load(yaml_file,Loader=yaml.FullLoader)
-    secret_key=config_dict["secret_key"]["dev_key"]
-    
+
     app = Flask(__name__, instance_relative_config=True)
     csrf.init_app(app)
     app.config.from_mapping(
@@ -62,12 +86,9 @@ def create_app(test_config=None):
         
         #Initializing the first entry with the amdin user
         dbobj = db.get_db()
-        admin_username = config_dict["admin_user"]["username"]
-        admin_pass = config_dict["admin_user"]["password"]
-        admin_2fa = config_dict["admin_user"]["2facode"]
         
         #Would be not present in real world application(Password in cleartext being inserted)
-        dbobj.execute('INSERT INTO user (username, password,phone, isAdmin) VALUES (?, ?, ?, ?)',(admin_username, generate_password_hash(admin_pass),str(admin_2fa),True))
+        dbobj.execute('INSERT INTO user (username, password,phone, isAdmin) VALUES (?, ?, ?, ?)',(admin_username, generate_password_hash(admin_pass),admin_2fa,True))
         dbobj.commit()
     
     app.register_blueprint(login.root_view)
